@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>飞机大战 × 坦克大战 · 趣味升级说明</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0b0e1a; color: #dfe6f5; line-height: 1.7;
+    padding: 32px 16px 64px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  header {
+    text-align: center; padding: 40px 20px 32px;
+    background: linear-gradient(160deg, #101a38 0%, #0b0e1a 70%);
+    border: 1px solid #223; border-radius: 20px; margin-bottom: 28px;
+  }
+  h1 { font-size: 30px; letter-spacing: 1px; }
+  h1 .cyan { color: #00f0ff; } h1 .pink { color: #ff00d4; } h1 .gold { color: #ffd700; }
+  .sub { color: #8fa3c8; margin-top: 8px; font-size: 14px; }
+  h2 {
+    font-size: 21px; margin: 36px 0 16px; padding-left: 12px;
+    border-left: 4px solid #00f0ff; color: #00f0ff;
+  }
+  h2.tank { border-left-color: #ff8800; color: #ff8800; }
+  .card {
+    background: #12172e; border: 1px solid #232c4d; border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 14px;
+  }
+  .card h3 { font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .badge {
+    display: inline-block; font-size: 12px; padding: 2px 10px; border-radius: 20px;
+    background: rgba(0,240,255,.12); color: #00f0ff; border: 1px solid rgba(0,240,255,.35);
+    margin-right: 8px; vertical-align: 1px;
+  }
+  .badge.gold { background: rgba(255,215,0,.12); color: #ffd700; border-color: rgba(255,215,0,.4); }
+  .badge.pink { background: rgba(255,0,212,.12); color: #ff00d4; border-color: rgba(255,0,212,.4); }
+  .badge.red  { background: rgba(255,60,60,.12); color: #ff6666; border-color: rgba(255,60,60,.4); }
+  .badge.green{ background: rgba(0,255,136,.12); color: #00ff88; border-color: rgba(0,255,136,.4); }
+  .badge.orange{background: rgba(255,170,0,.12); color: #ffaa00; border-color: rgba(255,170,0,.4); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid #263056; padding: 9px 12px; text-align: left; }
+  th { background: #1a2140; color: #9fd8ff; font-weight: 600; white-space: nowrap; }
+  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+  .key { color: #ffd700; font-weight: 600; }
+  .tip { color: #8fa3c8; font-size: 13px; }
+  .path { font-family: Consolas, monospace; font-size: 12px; color: #7fd6ff; word-break: break-all; }
+  footer { text-align: center; color: #5a6b8c; font-size: 13px; margin-top: 40px; }
+  ul { padding-left: 20px; } li { margin: 4px 0; }
+  @media (max-width: 700px) { body { padding: 16px 10px 40px; } h1 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1><span class="cyan">飞机大战</span> × <span class="pink">坦克大战</span> <span class="gold">趣味升级</span></h1>
+  <div class="sub">新增 6 大玩法机制 · 2 种新敌人 · 4 种新道具 · Boss 狂暴战 · 连击体系 · 2026-08-16</div>
+</header>
+
+<h2>✈ 飞机大战新增内容</h2>
+
+<div class="card">
+  <h3><span class="badge gold">新敌人</span>金色财宝机 GOLDEN</h3>
+  <p>随机乱入的金色敌机，旋转十芒星造型 + 脉冲金光。击毁后：<span class="key">+1500 分、掉 5 枚金币 + 额外 50 金币、30% 概率掉 Bomb</span>，伴随专属金币音效与 "GOLDEN INCOMING!" 全屏通告。战役与无尽模式都会出现，无尽模式越到后期来得越频繁。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge orange">新敌人</span>分裂者 SPLITTER</h3>
+  <p>橙金色双菱形敌机，带血条，会发射自机狙弹。被击毁时<span class="key">分裂成 2 只小型无人机</span>继续骚扰，打一个变两个，波次压迫感翻倍。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge pink">新机制</span>击杀暴击 CRITICAL</h3>
+  <p>击杀敌机时有 <span class="key">12% 概率触发暴击</span>：额外 +2 倍分数、屏幕微震、大号粉色 "CRITICAL!" 浮动字 + 上升音效。Boss 战中暴击同样生效。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge green">新机制</span>连击段位称号</h3>
+  <p>连击达到 10 / 25 / 50 / 100 时依次触发段位：<span class="key">RAPID → RAMPAGE → UNSTOPPABLE → GODLIKE</span>，全屏大字 + 专属和弦音效。连击不止是数字，刷段位成了新目标。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge red">Boss 强化</span>最终狂暴 FINAL FURY</h3>
+  <p>Boss 最后一个阶段且 HP &lt; 20% 时进入狂暴：<span class="key">弹幕频率 ×1.6、召唤加速 ×1.5</span>，屏幕红闪 + 震屏 + "FINAL FURY!" 警告 + 低沉咆哮音效，Boss 周身环绕红色粒子。三个 Boss（机械巨蟹 / 量子母舰 / 深渊吞噬者）全部生效。</p>
+</div>
+
+<h2 class="tank">🛡 坦克大战新增内容</h2>
+
+<div class="card">
+  <h3><span class="badge red">新敌人</span>自爆兵 SUICIDE</h3>
+  <p>亮红色坦克，不射击，<span class="key">锁定玩家或基地直线冲锋</span>，接近后加速冲刺 + 持续闪烁警告。撞上即爆炸：对玩家造成 2 点伤害、对基地 1 点伤害、炸毁周围 3×3 砖墙。第 1/2/4/5 关战役波次与无尽模式都会出现。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge orange">新道具</span>空袭支援 AIRSTRIKE</h3>
+  <p>拾取后<span class="key">召唤 3 轮轰炸</span>：每轮优先锁定场上敌人位置，红色爆炸清怪 + 破坏 3×3 砖墙，最后一轮伤害更高。清屏开路的爽快道具，捡到就是一波节奏点。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge green">新道具</span>急速射击 RAPID</h3>
+  <p>拾取后 <span class="key">10 秒内射速翻倍</span>，配合火力升级可形成弹幕压制。手感变化明显，适合硬刚 BOSS。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge pink">新机制</span>连击 COMBO 系统</h3>
+  <p>6 秒内连续击杀累积连击：<span class="key">每 5 连击得分 ×1 倍，最高 ×3 倍</span>。HUD 实时显示 COMBO xN（粉色高亮），击杀时浮动 "COMBO xN"，结算界面新增"最高连击"统计。连击让清波次更有动力。</p>
+</div>
+
+<div class="card">
+  <h3><span class="badge gold">新敌人</span>金坦克 GOLDEN（无尽模式彩蛋）</h3>
+  <p>无尽模式随机刷新的金色坦克：<span class="key">击毁 +5000 分（含 5 倍加成）、必掉随机道具、专属金币音效</span> + "金色坦克出现!" 提示。无尽模式挖宝目标 +1。</p>
+</div>
+
+<h2>📋 修改文件清单</h2>
+<div class="card">
+  <table>
+    <tr><th>游戏</th><th>文件</th><th>改动</th></tr>
+    <tr><td rowspan="7">飞机大战</td><td class="path">src/config/Colors.js</td><td>新增 GOLDEN / SPLITTER 颜色</td></tr>
+    <tr><td class="path">src/config/EnemyData.js</td><td>新增 golden / splitter 敌机数据</td></tr>
+    <tr><td class="path">src/entities/Enemy.js</td><td>新敌机绘制、分裂逻辑、死亡流程</td></tr>
+    <tr><td class="path">src/systems/Spawner.js</td><td>战役/无尽随机财宝机乱入</td></tr>
+    <tr><td class="path">src/core/Game.js</td><td>暴击判定、连击段位、金币奖励</td></tr>
+    <tr><td class="path">src/entities/Boss.js</td><td>残血狂暴模式（3 Boss 通用）</td></tr>
+    <tr><td class="path">src/core/AudioManager.js</td><td>新增暴击/金币/段位/狂暴音效</td></tr>
+    <tr><td rowspan="10">坦克大战</td><td class="path">src/config/TankData.js</td><td>新增 suicide/golden 敌人、airstrike/rapid 道具</td></tr>
+    <tr><td class="path">src/config/EnemyAIData.js</td><td>自爆兵 AI 配置</td></tr>
+    <tr><td class="path">src/entities/EnemyTank.js</td><td>自爆兵追击 AI、冲撞爆炸、范围伤害</td></tr>
+    <tr><td class="path">src/core/Game.js</td><td>连击系统、空袭 3 轮轰炸、道具处理</td></tr>
+    <tr><td class="path">src/entities/PlayerTank.js</td><td>急速射击（射速翻倍 10s）</td></tr>
+    <tr><td class="path">src/systems/SpawnSystem.js</td><td>无尽模式金坦克刷新</td></tr>
+    <tr><td class="path">src/ui/UIManager.js</td><td>连击 HUD、结算最高连击</td></tr>
+    <tr><td class="path">index.html</td><td>HUD 连击显示、结算新增行</td></tr>
+    <tr><td class="path">styles/main.css</td><td>连击 HUD 粉色高亮样式</td></tr>
+    <tr><td class="path">src/config/MapData.js</td><td>5 关战役波次加入自爆兵/金坦克</td></tr>
+  </table>
+  <p class="tip">另：坦克大战 src/config/Colors.js 同步新增 4 个配色常量。</p>
+</div>
+
+<h2>✅ 验证情况</h2>
+<div class="card">
+  <ul>
+    <li><span class="key">语法检查：</span>17 个修改文件全部通过 Node.js 语法校验</li>
+    <li><span class="key">模块检查：</span>两个游戏全部 136 条 import 导出引用校验通过</li>
+    <li><span class="key">运行测试：</span>模拟浏览器环境真实跑通游戏循环，19/19 项新功能路径全部通过（金坦克生成/绘制/死亡、分裂者分裂、暴击判定、连击段位、Boss 狂暴触发与战斗更新、自爆兵追击冲撞爆炸与计分、金坦克击杀加分、连击累计、空袭 3 轮轰炸、急速射击、无尽金坦克刷新）</li>
+    <li><span class="key">建议：</span>直接双击 index.html 即可游玩；如需确认浏览器内表现，打开后按 F12 查看 Console 无报错即可</li>
+  </ul>
+</div>
+
+<footer>LYD 的游戏升级日志 · 生成于 2026-08-16</footer>
+</div>
+</body>
+</html>

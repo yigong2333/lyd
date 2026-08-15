@@ -1,0 +1,66 @@
+OK   src/config/Colors.js ::     SNIPER:  '#ffdd00',    // 狙击手·黄
+    BOSS:    '
+OK   src/config/Colors.js ::     FREEZE:  '#88ccff',
+    BASE:    '#ffaa00',
+  
+OK   src/config/TankData.js ::     score: 2000,
+    color: '#ff00ff',
+    ai: 'bo
+FAIL src/config/TankData.js: anchor count=0 (expect 1) ::   base:   { name: '基地加固', color: '#ffaa00', icon: '?', durat
+OK   src/config/TankData.js :: export const PowerupTypes = ['star', 'speed', 'shi
+OK   src/config/EnemyAIData.js ::   boss: {
+    thinkInterval: 300,
+OK   src/entities/EnemyTank.js :: import { Tank } from './Tank.js';
+import { DIR, DI
+OK   src/entities/EnemyTank.js ::       case 'boss':
+        this._aiBoss(player);
+ 
+OK   src/entities/EnemyTank.js ::   _fireSpread() {
+OK   src/entities/EnemyTank.js ::   update(dt) {
+    super.update(dt);
+  }
+OK   src/core/Game.js ::     this.shake = 0;
+    this.flash = 0;
+    this.f
+OK   src/core/Game.js ::   _resetEntities() {
+    this.enemies = [];
+    th
+OK   src/core/Game.js ::     // 冻结道具
+    if (this.freezeTimer > 0) {
+      
+OK   src/core/Game.js ::   onTankDestroyed(tank) {
+    spawnExplosion(this.
+OK   src/core/Game.js ::       case 'base':
+        this.level.fortifyBase(
+OK   src/core/Game.js ::   findEmptyTile() {
+OK   src/entities/PlayerTank.js ::     this.dashActive = 0;
+    // 道具增益
+OK   src/entities/PlayerTank.js ::     super.update(dt);
+
+    // 射击
+    if (input && 
+OK   src/entities/PlayerTank.js ::     this.dashActive = 0;
+    this.shieldTime = 0;
+
+OK   src/systems/SpawnSystem.js ::     this.maxAlive = 4;
+    this.allWavesDone = fal
+OK   src/systems/SpawnSystem.js ::     this.endlessWave = 1;
+    this.endlessTimer = 
+OK   src/systems/SpawnSystem.js ::     // 无尽模式空投道具
+    if (this.game.mode === 'endles
+OK   src/systems/SpawnSystem.js ::   // 击毁敌人时掉落道具
+  maybeDropPowerup(x, y, isBoss = f
+OK   src/ui/UIManager.js ::       waveLabel: this.$('wave-label'),
+      float
+OK   src/ui/UIManager.js ::     if (this.dom.enemyCount) this.dom.enemyCount.t
+OK   src/ui/UIManager.js ::     this.dom.rScore.textContent = padZero(g.score,
+OK   index.html ::         <div class="hud-box">
+          <span clas
+OK   index.html ::         <div class="result-row"><span>用时</span><sp
+OK   styles/main.css :: @media (max-width: 600px) {
+OK   src/core/AudioManager.js ::   sfxSkill() { this._sweep(660, 1320, 0.2, 'triang
+OK   src/config/MapData.js ::       { count: 4, types: ['striker', 'scout', 'hea
+OK   src/config/MapData.js ::       { count: 4, types: ['striker', 'heavy', 'sni
+OK   src/config/MapData.js ::       { count: 2, types: ['boss', 'sniper'], inter
+FAIL src/config/MapData.js: anchor count=2 (expect 1) ::       { count: 5, types: ['sniper', 'striker', 'heavy', 'sni
+OK   src/config/MapData.js ::       { count: 5, types: ['heavy', 'sniper', 'stri

@@ -1,0 +1,50 @@
+OK   src/config/Colors.js ::     KAMIKAZE:  '#ff3366',   // 自杀 - 红
+  },
+OK   src/config/EnemyData.js ::   // Boss召唤的护卫
+  minion: {
+OK   src/entities/Enemy.js ::   kamikaze: Colors.ENEMY.KAMIKAZE,
+};
+OK   src/entities/Enemy.js ::   onDeath(src) {
+    // 爆炸特效
+    const big = this.
+OK   src/entities/Enemy.js ::     const big = this.radius > 22 || this.type === 
+OK   src/entities/Enemy.js ::       case 'kamikaze': {
+OK   src/systems/Spawner.js ::     this.endlessNextElite = 0;
+    this.progress =
+OK   src/systems/Spawner.js ::     this.game.stageEnemyHpMul = this.stage.enemyHp
+OK   src/systems/Spawner.js ::     this.game.stageEnemyHpMul = 1 + 0.2 * (this.en
+OK   src/systems/Spawner.js ::     // 进度（不含Boss战部分：Boss战为最后10%）
+    const nonBoss
+OK   src/systems/Spawner.js ::     // Mini Boss
+    this.endlessMiniBoss -= dt;
+OK   src/systems/Spawner.js ::     this.progress = (this.endlessTimer % 15000) / 
+OK   src/core/Game.js ::     this.combo++;
+    this.maxCombo = Math.max(thi
+OK   src/core/Game.js ::   onEnemyKilled(e) {
+    this.kills++;
+    this.pl
+OK   src/core/AudioManager.js ::   sfxPhase() {
+    this._noise({ d: 0.4, vol: 0.3,
+OK   src/entities/Boss.js ::     this.teleportTimer = 0;
+  }
+
+  reset() {
+OK   src/entities/Boss.js ::     this.stunTimer = 0;
+  }
+
+  spawn(bossId, game)
+OK   src/entities/Boss.js ::     this.custom = {};
+    // 初始化各计时器
+OK   src/entities/Boss.js ::   _checkPhase(game) {
+    const ph = this.data.pha
+OK   src/entities/Boss.js ::     const ph = this.data.phases[this.phase];
+    c
+OK   src/entities/Boss.js ::     const ph = this.data.phases[this.phase];
+    c
+FAIL src/entities/Boss.js: anchor count=0 (expect 1) ::     const ph = this.data.phases[this.phase];
+    const bh = 
+OK   src/entities/Boss.js ::     // 召唤小怪
+    if (ph.summon) {
+      this.summon
+OK   src/entities/Boss.js ::     // ---------- 弹幕 ----------
+    if (this.bossI

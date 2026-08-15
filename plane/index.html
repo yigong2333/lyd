@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>LYD的飞机大战</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<a href="/" style="position:fixed;top:10px;left:10px;z-index:9999;background:rgba(10,6,18,.75);border:1px solid rgba(90,141,255,.4);color:#9fd8ff;padding:5px 12px;border-radius:8px;font-size:12px;text-decoration:none;backdrop-filter:blur(8px);font-family:system-ui,sans-serif;">← 返回主页</a>
+
+<!-- 游戏容器 -->
+<div id="game-container">
+  <!-- Canvas层 -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD层（游戏内UI） -->
+  <div id="hud" class="hidden">
+    <!-- 顶部信息栏 -->
+    <div id="hud-top">
+      <div class="hud-left">
+        <div class="hud-score">
+          <span class="label">SCORE</span>
+          <span id="score-value">0000000</span>
+        </div>
+        <div id="combo-display" class="combo hidden">COMBO x<span id="combo-value">0</span></div>
+        <div id="graze-display" class="graze hidden">GRAZE x<span id="graze-value">0</span></div>
+      </div>
+      <div class="hud-right">
+        <div id="power-display" class="power">
+          <span class="label">LV</span>
+          <div id="power-dots"></div>
+        </div>
+        <div id="best-score-display" class="hud-best">
+          <span class="label">BEST</span>
+          <span id="hud-best-value">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 左上资源栏 -->
+    <div id="hud-resources">
+      <div class="resource-bar">
+        <div class="label hp-label">HP</div>
+        <div class="bar-wrap">
+          <div id="hp-bar" class="bar hp-bar"></div>
+        </div>
+        <span id="hp-text">100/100</span>
+      </div>
+      <div class="resource-bar">
+        <div class="label en-label">EN</div>
+        <div class="bar-wrap">
+          <div id="en-bar" class="bar en-bar"></div>
+        </div>
+      </div>
+      <div class="resource-row">
+        <div id="bomb-display" class="bomb-row">
+          <span class="label">BOMB</span>
+          <div id="bomb-icons"></div>
+        </div>
+      </div>
+      <!-- 蓄力条 -->
+      <div id="charge-wrap" class="charge-wrap hidden">
+        <div id="charge-bar" class="charge-bar"></div>
+        <span>CHARGING...</span>
+      </div>
+    </div>
+
+    <!-- 底部进度条 -->
+    <div id="hud-bottom">
+      <div id="stage-progress" class="stage-progress hidden">
+        <span class="label" id="stage-name">STAGE 1</span>
+        <div class="bar-wrap small">
+          <div id="stage-bar" class="bar stage-bar"></div>
+        </div>
+        <span id="stage-percent">0%</span>
+      </div>
+      <!-- Boss血条 -->
+      <div id="boss-health-wrap" class="boss-health-wrap hidden">
+        <div class="boss-header">
+          <span id="boss-name">BOSS</span>
+          <span id="boss-phase">PHASE 1</span>
+        </div>
+        <div class="boss-bar-wrap">
+          <div id="boss-health-bar" class="boss-health-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 浮动文字层 -->
+    <div id="floating-layer"></div>
+
+    <!-- Boss警告 -->
+    <div id="boss-warning" class="boss-warning hidden">
+      <div class="warning-top">⚠⚠⚠ WARNING ⚠⚠⚠</div>
+      <div class="warning-mid" id="warning-boss-name">INCOMING ENEMY</div>
+      <div class="warning-bot">⚠⚠⚠ WARNING ⚠⚠⚠</div>
+    </div>
+
+    <!-- 移动端虚拟按钮 -->
+    <div id="mobile-controls" class="mobile-controls hidden">
+      <button id="btn-skill" class="v-btn skill-btn">SKILL</button>
+      <button id="btn-bomb" class="v-btn bomb-btn">💣 BOMB</button>
+    </div>
+  </div>
+
+  <!-- 主菜单 -->
+  <div id="main-menu" class="menu-overlay">
+    <div class="menu-panel">
+      <div class="menu-deco deco-tl"></div><div class="menu-deco deco-tr"></div>
+      <div class="menu-deco deco-bl"></div><div class="menu-deco deco-br"></div>
+      <h1 class="game-title">
+        <span class="title-zh">LYD</span>
+        <span class="title-sep">✦</span>
+        <span class="title-sub">飞机大战</span>
+      </h1>
+      <div class="game-subtitle">LYD'S AIRPLANE BATTLE</div>
+      <div class="menu-buttons">
+        <button class="cyber-btn primary" data-action="campaign">▶ 开始战役</button>
+        <button class="cyber-btn" data-action="endless">🚀 无尽模式</button>
+        <button class="cyber-btn" data-action="hangar">🛸 机库强化</button>
+        <button class="cyber-btn" data-action="ranking">🏆 排行榜</button>
+      </div>
+      <div class="best-score">Best Score : <span id="best-score">0</span></div>
+      <div class="controls-hint">
+        <div>PC: WASD/鼠标移动  空格=BOMB  长按=蓄力  ESC=暂停</div>
+        <div>移动端: 拖动屏幕移动，点按按钮释放技能</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 机库界面 -->
+  <div id="hangar-menu" class="menu-overlay hidden">
+    <div class="menu-panel wide">
+      <h2 class="panel-title">🛸 机库 / HANGAR</h2>
+      <div class="ship-selector">
+        <div class="ship-card selected" data-ship="sf01">
+          <div class="ship-icon sf01-icon"></div>
+          <div class="ship-name">猎鹰 FALCON</div>
+          <div class="ship-type">均衡型</div>
+          <div class="ship-stats">HP:100 SPD:6 PWR:★★★</div>
+          <div class="ship-desc">新手友好，综合全面<br>必杀：激光扫射</div>
+        </div>
+        <div class="ship-card" data-ship="sf02">
+          <div class="ship-icon sf02-icon"></div>
+          <div class="ship-name">雷霆 THUNDER</div>
+          <div class="ship-type">火力型</div>
+          <div class="ship-stats">HP:120 SPD:4 PWR:★★★★★</div>
+          <div class="ship-desc">重型穿甲，伤害爆表<br>必杀：电磁脉冲</div>
+        </div>
+        <div class="ship-card locked" data-ship="sf03">
+          <div class="ship-icon sf03-icon"></div>
+          <div class="ship-name">幻影 PHANTOM</div>
+          <div class="ship-type">技巧型</div>
+          <div class="ship-stats">HP:80 SPD:9 PWR:★★★★</div>
+          <div class="ship-desc">移动迅捷，擦弹加分<br>必杀：时停领域</div>
+          <div class="lock-tag">通关第1关解锁</div>
+        </div>
+      </div>
+      <div class="wingman-config">
+        <h3>僚机配置</h3>
+        <div class="wingman-options">
+          <div class="wm-opt selected" data-wm="attack">攻击型 (威力+30%)</div>
+          <div class="wm-opt" data-wm="defense">防御型 (受伤-20%)</div>
+          <div class="wm-opt" data-wm="support">辅助型 (道具磁吸+50%)</div>
+        </div>
+      </div>
+      <button class="cyber-btn back-btn" data-action="back-to-menu">◀ 返回主菜单</button>
+    </div>
+  </div>
+
+  <!-- 暂停菜单 -->
+  <div id="pause-menu" class="menu-overlay hidden">
+    <div class="menu-panel small">
+      <h2 class="panel-title">⏸ 暂停 / PAUSED</h2>
+      <div class="menu-buttons">
+        <button class="cyber-btn primary" data-action="resume">▶ 继续游戏</button>
+        <button class="cyber-btn" data-action="restart">🔄 重新开始</button>
+        <button class="cyber-btn" data-action="quit">🏠 退出到主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结算界面 -->
+  <div id="result-screen" class="menu-overlay hidden">
+    <div class="menu-panel">
+      <h2 id="result-title" class="panel-title result-win">✦ 任务达成 ✦</h2>
+      <div id="result-rank" class="result-rank">S</div>
+      <div class="result-stats">
+        <div class="stat-row"><span>通关时间</span><span id="r-time">00:00</span></div>
+        <div class="stat-row"><span>总得分</span><span id="r-score">0</span></div>
+        <div class="stat-row"><span>最高连击</span><span id="r-combo">0</span></div>
+        <div class="stat-row"><span>擦弹数</span><span id="r-graze">0</span></div>
+        <div class="stat-row"><span>击杀敌机</span><span id="r-kills">0</span></div>
+        <div class="stat-row"><span>受到伤害</span><span id="r-hits">0</span></div>
+        <div class="stat-row reward-row"><span>奖励金币</span><span id="r-gold">0</span></div>
+      </div>
+      <div class="menu-buttons">
+        <button class="cyber-btn primary" data-action="next-stage">下一关 ▶</button>
+        <button class="cyber-btn" data-action="retry">🔄 再战一次</button>
+        <button class="cyber-btn" data-action="quit">🏠 返回主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 排行榜 -->
+  <div id="ranking-screen" class="menu-overlay hidden">
+    <div class="menu-panel small">
+      <h2 class="panel-title">🏆 排行榜 / RANKING</h2>
+      <ol id="ranking-list" class="ranking-list">
+        <li class="empty-row">暂无记录，去创造第一名吧！</li>
+      </ol>
+      <button class="cyber-btn back-btn" data-action="back-to-menu">◀ 返回主菜单</button>
+    </div>
+  </div>
+
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="李弈德 - 低空飞行器装备技术 | 末地星空风简历">
+<title>李弈德 | 以技术为翼，向低空飞行</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230f0d1f'/%3E%3Cpath d='M8 2l1.2 3.2L12.5 6l-3.3.8L8 10l-1.2-3.2L3.5 6l3.3-.8z' fill='%235a8dff'/%3E%3Ccircle cx='8' cy='8' r='2' fill='%23fcd34d'/%3E%3C/svg%3E">
+<meta property="og:title" content="李弈德 | 以技术为翼，向低空飞行">
+<meta property="og:description" content="低空飞行器装备技术 · AI工具应用 · 15项AI技能认证 · 网页游戏开发作品">
+<meta property="og:type" content="profile">
+<style>
+/* ========== 末地星空设计令牌 ========== */
+:root {
+  /* 深紫虚空底 — 降低紫色，改为深蓝更沉稳 */
+  --void: #0f0d1f;
+  --void-2: #171530;
+  --void-3: #1e1c3e;
+  --obsidian: #181330;
+  --obsidian-2: #25204a;
+  /* 主色：末影蓝 + 星环紫 （去掉刺眼的绿色） */
+  --ender: #5a8dff;        /* 主色：星空蓝，7.3:1对比度在深底可读 */
+  --ender-dark: #2d5fda;
+  --ender-glow: rgba(90,141,255,0.18);
+  --purple: #a78bfa;       /* 辅色：薰衣草紫，和蓝和谐 */
+  --purple-dark: #7c3aed;
+  --purple-glow: rgba(167,139,250,0.18);
+  --magenta: #f472b6;
+  --gold: #fcd34d;         /* 金色点缀，更柔和 */
+  --star: rgba(255,255,255,0.9);
+  /* 卡片 & 边框 — 稍亮一档，和背景差 0.15 灰度保持层次 */
+  --card: rgba(30,28,62,0.7);
+  --card-hover: rgba(38,35,80,0.8);
+  --border: rgba(167,139,250,0.22);
+  --border-bright: rgba(90,141,255,0.4);
+  /* 文字 — 提亮一档，确保 4.5:1 WCAG AA */
+  --text: #ffffff;         /* 正文：纯白 */
+  --text-2: #d4d1e5;       /* 二级：淡紫灰，对比度 10.2:1 达标 */
+  --text-3: #938fb0;       /* 三级：中紫灰，对比度 6.2:1 达标 */
+  --radius: 10px;
+  --shadow-float: 0 8px 28px rgba(0,0,0,0.55);
+  --shadow-glow: 0 0 24px rgba(90,141,255,0.18);
+  --shadow-purple: 0 0 24px rgba(167,139,250,0.18);
+  --transition: 200ms cubic-bezier(0.4,0,0.2,1);
+  --font-display: "Georgia", "Noto Serif SC", "Microsoft YaHei", serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "Cascadia Code", "JetBrains Mono", "Consolas", "Courier New", monospace;
+  --max-w: 880px;
+}
+[data-theme="light"] {
+  --void: #f4f2fb;
+  --void-2: #ebe7f8;
+  --void-3: #e0daf5;
+  --card: rgba(255,255,255,0.85);
+  --card-hover: rgba(255,255,255,0.95);
+  --border: rgba(124,58,237,0.18);
+  --border-bright: rgba(45,95,218,0.35);
+  --text: #131026;
+  --text-2: #3d3660;
+  --text-3: #746e92;
+  --shadow-float: 0 6px 20px rgba(40,30,80,0.08);
+  /* 浅色模式下强调色加深，确保白底可读 */
+  --ender: #2563eb;        /* 深蓝，对比度 5.9:1 达标 */
+  --ender-dark: #1d4ed8;
+  --ender-glow: rgba(37,99,235,0.12);
+  --purple: #7c3aed;       /* 深紫，对比度 5.9:1 达标 */
+  --purple-dark: #6d28d9;
+  --purple-glow: rgba(124,58,237,0.12);
+  --gold: #b45309;         /* 深琥珀，对比度 5.8:1 达标 */
+  --magenta: #be185d;
+  --star: rgba(80,60,120,0.3);
+}
+/* 浅色模式浮岛卡片 fallback */
+[data-theme="light"] .floating-card {
+  background: #ffffff;
+  background: rgba(255,255,255,0.88);
+}
+[data-theme="light"] .hero-quote {
+  background: #ffffff;
+  background: rgba(255,255,255,0.88);
+}
+/* 浅色模式龙鳞卡片 — 白底替代深色 */
+[data-theme="light"] .dragon-card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(244,242,251,0.95));
+  border-color: rgba(37,99,235,0.2);
+}
+[data-theme="light"] .dragon-banner {
+  background: #e8e4f5;
+}
+
+/* ========== 重置 ========== */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 16px;
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+/* 末地星空背景 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(167,139,250,0.14), rgba(15,13,31,0) 50%),
+    radial-gradient(ellipse at 20% 100%, rgba(90,141,255,0.1), rgba(15,13,31,0) 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(244,114,182,0.06), rgba(15,13,31,0) 50%),
+    linear-gradient(180deg, #0f0d1f 0%, #171530 50%, #0f0d1f 100%);
+  z-index: 0;
+}
+/* 星点粒子 */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8), rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.8), rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 45% 15%, rgba(255,255,255,0.6), rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 65% 75%, rgba(255,255,255,0.8), rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 80% 35%, rgba(167,139,250,0.5), rgba(167,139,250,0)),
+    radial-gradient(1px 1px at 90% 60%, rgba(90,141,255,0.5), rgba(90,141,255,0)),
+    radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.5), rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 55% 45%, rgba(255,255,255,0.8), rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 35% 90%, rgba(167,139,250,0.4), rgba(167,139,250,0)),
+    radial-gradient(1px 1px at 75% 10%, rgba(90,141,255,0.4), rgba(90,141,255,0)),
+    radial-gradient(2px 2px at 5% 50%, rgba(252,211,77,0.3), rgba(252,211,77,0)),
+    radial-gradient(2px 2px at 95% 25%, rgba(244,114,182,0.3), rgba(244,114,182,0));
+  background-size: 100% 100%;
+  pointer-events: none;
+  z-index: 0;
+  animation: twinkle 8s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+/* ========== 末地装饰物 ========== */
+.end-deco {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.12;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges; /* Firefox 兼容 */
+  -webkit-image-rendering: pixelated; /* Safari 兼容 */
+}
+.end-deco svg { width: 100%; height: 100%; display: block; }
+.deco-endstone-1 { top: 8%; left: 3%; width: 48px; height: 48px; transform: rotate(-12deg); }
+.deco-endstone-2 { top: 30%; right: 4%; width: 40px; height: 40px; transform: rotate(15deg); }
+.deco-endstone-3 { bottom: 25%; left: 5%; width: 36px; height: 36px; transform: rotate(8deg); }
+.deco-enderman { top: 55%; right: 2%; width: 44px; height: 60px; opacity: 0.08; }
+.deco-shulker { bottom: 10%; right: 6%; width: 36px; height: 42px; opacity: 0.1; }
+.deco-pearl { top: 18%; left: 8%; width: 24px; height: 24px; opacity: 0.15; animation: float 4s ease-in-out infinite; will-change: transform; }
+.deco-pearl2 { top: 75%; left: 10%; width: 20px; height: 20px; opacity: 0.12; animation: float 5s ease-in-out infinite 1s; will-change: transform; }
+/* 新增末地石制品 */
+.deco-endstone-brick { top: 45%; left: 6%; width: 40px; height: 40px; transform: rotate(-8deg); }
+.deco-end-rod { top: 14%; right: 9%; width: 14px; height: 56px; opacity: 0.18; animation: glow 3s ease-in-out infinite; will-change: opacity, filter; }
+.deco-purpur { top: 68%; left: 4%; width: 36px; height: 36px; transform: rotate(10deg); }
+.deco-portal-frame { top: 22%; right: 11%; width: 44px; height: 44px; opacity: 0.14; }
+.deco-dragon-egg { bottom: 38%; right: 3%; width: 32px; height: 40px; opacity: 0.16; animation: float 6s ease-in-out infinite; will-change: transform; }
+.deco-end-crystal { top: 50%; left: 13%; width: 30px; height: 30px; opacity: 0.18; animation: float 4.5s ease-in-out infinite 0.5s; will-change: transform; }
+/* 新增末影人 2 — 左下角 */
+.deco-enderman-2 { bottom: 18%; left: 8%; width: 38px; height: 52px; opacity: 0.07; transform: scaleX(-1); }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes glow {
+  0%, 100% { opacity: 0.15; filter: drop-shadow(0 0 4px rgba(255,255,255,0.4)); }
+  50% { opacity: 0.25; filter: drop-shadow(0 0 12px rgba(167,139,250,0.6)); }
+}
+/* 浅色模式下降低装饰物不透明度，避免干扰阅读 */
+[data-theme="light"] .end-deco { opacity: 0.08; }
+[data-theme="light"] .deco-enderman,
+[data-theme="light"] .deco-enderman-2 { opacity: 0.05; }
+[data-theme="light"] .deco-pearl,
+[data-theme="light"] .deco-pearl2,
+[data-theme="light"] .deco-end-crystal,
+[data-theme="light"] .deco-dragon-egg { opacity: 0.1; }
+/* 移动端：保留少量浮动装饰，隐藏静态大块 */
+@media (max-width: 600px) {
+  .deco-endstone-1, .deco-endstone-2, .deco-endstone-3,
+  .deco-endstone-brick, .deco-purpur, .deco-portal-frame,
+  .deco-enderman, .deco-enderman-2, .deco-shulker { display: none; }
+  .deco-pearl, .deco-pearl2 { width: 18px; height: 18px; }
+  .deco-end-crystal { width: 22px; height: 22px; }
+  .deco-dragon-egg { width: 24px; height: 30px; }
+  .deco-end-rod { display: none; }
+}
+/* 极小屏：全部隐藏 */
+@media (max-width: 380px) { .end-deco { display: none !important; } }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+ul { list-style: none; }
+
+/* ========== 导航栏 ========== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: #0a0612; /* 旧设备 fallback */
+  background: rgba(10,6,18,0.88); /* 不支持 blur 时高不透明度保证可读 */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+[data-theme="light"] .navbar {
+  background: #ede8f5;
+  background: rgba(237,232,245,0.92);
+}
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.nav-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  background: linear-gradient(135deg, var(--ender), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--ender);
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-links a {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.nav-links a:hover {
+  color: var(--ender);
+  background: var(--ender-glow);
+}
+.nav-actions { display: flex; gap: 6px; align-items: center; }
+.icon-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(26,16,48,0.5);
+  color: var(--text-2);
+  transition: all var(--transition);
+}
+.icon-btn:hover {
+  color: var(--ender);
+  border-color: var(--border-bright);
+  box-shadow: var(--shadow-glow);
+}
+.icon-btn svg { width: 18px; height: 18px; }
+.nav-toggle { display: none; }
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 54px; left: 0; right: 0;
+    background: rgba(10,6,18,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    padding: 12px 20px;
+    gap: 2px;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 300ms ease;
+  }
+  .nav-links.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .nav-links a { padding: 10px 12px; font-size: 0.95rem; width: 100%; }
+  .nav-toggle {
+    display: flex;
+    width: 36px; height: 36px;
+    align-items: center; justify-content: center;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: rgba(26,16,48,0.5);
+    color: var(--text-2);
+  }
+}
+
+/* ========== 主容器 ========== */
+main { position: relative; z-index: 1; padding-top: 54px; }
+section {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 48px 20px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  color: var(--text);
+}
+.section-title .label {
+  color: var(--ender);
+}
+.section-title::before, .section-title::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  max-width: 60px;
+  background: linear-gradient(90deg, rgba(167,139,250,0), rgba(167,139,250,0.5), rgba(167,139,250,0));
+}
+.section-title .label {
+  position: relative;
+  padding: 4px 16px;
+}
+.section-title .label::after {
+  content: attr(data-en);
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-3);
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ========== 浮岛卡片基础 ========== */
+.floating-card {
+  background: #1a1030; /* 旧设备 fallback 实色 */
+  background: rgba(26,16,48,0.85); /* 无 blur 时高不透明度 */
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  .floating-card {
+    background: rgba(26,16,48,0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+.floating-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(90,141,255,0.04), rgba(90,141,255,0) 50%, rgba(167,139,250,0.04));
+  pointer-events: none;
+  border-radius: var(--radius);
+}
+.floating-card:hover {
+  border-color: var(--border-bright);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-3px);
+}
+
+/* ========== Hero 区 ========== */
+.hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+  position: relative;
+}
+/* 末地传送门光圈 */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(90,141,255,0.18) 0%, rgba(167,139,250,0.18) 40%, rgba(15,13,31,0) 70%);
+  filter: blur(20px);
+  z-index: -1;
+  animation: pulse 6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+.hero-avatar {
+  width: 88px; height: 88px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-bright);
+  box-shadow: 0 0 20px var(--ender-glow), 0 4px 16px rgba(0,0,0,0.3);
+  overflow: hidden;
+  position: relative;
+}
+.hero-avatar svg { width: 100%; height: 100%; display: block; }
+.hero-name {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--text) 20%, var(--ender) 55%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--text);
+}
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.hero-tags .tag {
+  font-family: var(--font-mono);
+  padding: 5px 14px;
+  font-size: 0.75rem;
+  border-radius: 20px;
+  background: rgba(90,141,255,0.08);
+  color: var(--ender);
+  border: 1px solid rgba(90,141,255,0.2);
+  letter-spacing: 0.5px;
+}
+.hero-tags .tag.purple {
+  background: rgba(167,139,250,0.08);
+  color: var(--purple);
+  border-color: rgba(167,139,250,0.2);
+}
+.hero-tags .tag.gold {
+  background: rgba(252,211,77,0.08);
+  color: var(--gold);
+  border-color: rgba(252,211,77,0.2);
+}
+.hero-quote {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text);
+  max-width: 640px;
+  margin: 0 auto 24px;
+  font-weight: 500;
+  padding: 20px 24px;
+  background: #1a1030;
+  background: rgba(26,16,48,0.85);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  position: relative;
+}
+@supports ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  .hero-quote {
+    background: rgba(26,16,48,0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+.hero-quote::before {
+  content: '"';
+  position: absolute;
+  top: -8px; left: 12px;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--purple);
+  opacity: 0.4;
+}
+.hero-desc {
+  font-size: 0.92rem;
+  color: var(--text-2);
+  max-width: 560px;
+  margin: 0 auto 28px;
+  line-height: 1.8;
+}
+.hero-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  min-height: 44px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--ender), var(--purple));
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 16px var(--ender-glow);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--ender-glow); }
+.btn-outline {
+  border: 1px solid var(--border-bright);
+  color: var(--ender);
+  background: var(--ender-glow);
+  font-weight: 600;
+}
+.btn-outline:hover { border-color: var(--ender); background: var(--ender-glow); color: var(--text); }
+.btn svg { width: 16px; height: 16px; }
+
+/* ========== 亮点成果 — 对称四方格 ========== */
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .highlights { grid-template-columns: repeat(4, 1fr); }
+}
+.highlight-card {
+  padding: 20px 12px;
+  text-align: center;
+}
+.highlight-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold), var(--ender));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--gold); /* fallback */
+  line-height: 1.3;
+}
+.highlight-label {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+
+/* ========== 末影龙游戏展示区 ========== */
+.dragon-showcase {
+  position: relative;
+  padding: 36px 20px 32px;
+  margin: 0 auto 8px;
+  max-width: var(--max-w);
+  overflow: hidden;
+}
+/* 龙息能量条 — 顶部渐变光带 */
+.dragon-showcase::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 80%; height: 2px;
+  background: linear-gradient(90deg, rgba(90,141,255,0), var(--ender), var(--purple), var(--ender), rgba(90,141,255,0));
+  box-shadow: 0 0 12px var(--ender-glow);
+}
+.dragon-title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.dragon-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ender);
+  margin-bottom: 4px;
+  letter-spacing: 2px;
+}
+.dragon-title p {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+/* 龙翼装饰 */
+.dragon-wing {
+  display: inline-block;
+  vertical-align: middle;
+  width: 28px; height: 20px;
+  opacity: 0.5;
+  margin: 0 8px;
+}
+.dragon-wing svg { width: 100%; height: 100%; }
+
+.dragon-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+@media (min-width: 680px) {
+  .dragon-grid { grid-template-columns: 1fr 1fr; }
+}
+/* 龙鳞卡片 */
+.dragon-card {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(90,141,255,0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(30,28,62,0.9), rgba(20,16,48,0.95));
+  transition: all var(--transition);
+}
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  .dragon-card {
+    background: linear-gradient(160deg, rgba(30,28,62,0.75), rgba(20,16,48,0.8));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+.dragon-card:hover {
+  border-color: rgba(90,141,255,0.6);
+  box-shadow: 0 0 28px rgba(90,141,255,0.2), 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-4px);
+}
+/* 卡片顶 banner — 像素游戏缩略图区 */
+.dragon-banner {
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  background: #0a0a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dragon-banner svg { width: 100%; height: 100%; }
+/* banner 渐变遮罩 */
+.dragon-banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(20,16,48,0), rgba(20,16,48,0.95));
+}
+[data-theme="light"] .dragon-banner::after {
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.95));
+}
+.dragon-body { padding: 16px 18px 18px; }
+.dragon-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dragon-name .badge {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--ender-glow);
+  color: var(--ender);
+  border: 1px solid var(--border-bright);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.dragon-desc {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.dragon-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.dragon-stat {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--purple-glow);
+  color: var(--purple);
+  border: 1px solid var(--border);
+}
+.dragon-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--ender), var(--purple));
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition);
+  box-shadow: 0 3px 12px var(--ender-glow);
+}
+.dragon-play:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px var(--ender-glow);
+}
+.dragon-play svg { width: 14px; height: 14px; }
+
+/* ========== Tabs ========== */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 8px 20px;
+  font-size: 0.88rem;
+  color: var(--text-2);
+  border-radius: 20px;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+.tab-btn:hover { color: var(--text); background: rgba(167,139,250,0.06); }
+.tab-btn[aria-selected="true"] {
+  color: #fff;
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  border-color: rgba(167,139,250,0.3);
+  box-shadow: var(--shadow-purple);
+}
+.tab-panel { display: none; animation: fadeIn 250ms ease; }
+.tab-panel.active { display: block; }
+
+/* ========== 时间线 ========== */
+.timeline { position: relative; padding-left: 24px; max-width: 640px; margin: 0 auto; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px; top: 4px; bottom: 4px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--ender), var(--purple), rgba(15,13,31,0));
+}
+.timeline-item { position: relative; padding-bottom: 28px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -23px; top: 4px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--void-2);
+  border: 2px solid var(--ender);
+  box-shadow: 0 0 8px var(--ender-glow);
+  transition: all var(--transition);
+}
+.timeline-item:hover::before {
+  background: var(--ender);
+  box-shadow: 0 0 0 4px var(--ender-glow), 0 0 12px var(--ender);
+}
+.timeline-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+.timeline-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--gold);          /* 金色，醒目且有荣誉感 */
+  letter-spacing: 0.5px;
+}
+.timeline-org { color: var(--ender); font-size: 0.85rem; }
+.timeline-date { font-size: 0.8rem; color: var(--text-3); font-family: var(--font-mono); }
+.timeline-desc { font-size: 0.88rem; color: var(--text-2); line-height: 1.7; }
+.timeline-desc li { margin-bottom: 4px; padding-left: 14px; position: relative; }
+.timeline-desc li::before { content: '◆'; position: absolute; left: 0; font-size: 0.6rem; color: var(--purple); top: 3px; }
+
+/* ========== 项目卡片 ========== */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.project-card { padding: 20px; display: flex; flex-direction: column; }
+.project-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(90,141,255,0.12), rgba(167,139,250,0.12));
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.project-icon svg { width: 22px; height: 22px; color: var(--ender); }
+.project-name { font-weight: 600; font-size: 1.02rem; margin-bottom: 6px; }
+.project-desc { font-size: 0.86rem; color: var(--text-2); line-height: 1.7; margin-bottom: 12px; flex: 1; }
+.project-tech { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tech-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: rgba(167,139,250,0.08);
+  color: var(--purple);
+  border: 1px solid rgba(167,139,250,0.15);
+}
+.project-result {
+  font-size: 0.82rem;
+  color: var(--ender);
+  padding: 8px 12px;
+  background: rgba(90,141,255,0.06);
+  border-radius: var(--radius);
+  border-left: 2px solid var(--ender);
+  margin-bottom: 10px;
+}
+.project-link {
+  align-self: flex-start;
+  padding: 8px 18px;
+  font-size: 0.82rem;
+}
+.project-link svg { width: 14px; height: 14px; }
+
+/* ========== 技能矩阵 ========== */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+@media (min-width: 640px) {
+  .skill-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.skill-group h4 {
+  font-size: 0.9rem;
+  color: var(--ender);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.skill-group h4 svg { width: 16px; height: 16px; color: var(--purple); }
+.skill-bar { margin-bottom: 12px; }
+.skill-bar-name { display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px; color: var(--text); }
+.skill-bar-name span:last-child { color: var(--gold); font-family: var(--font-mono); }
+.skill-bar-track {
+  height: 6px;
+  background: rgba(10,6,18,0.5);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--ender), var(--purple));
+  width: 0;
+  transition: width 800ms cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 8px var(--ender-glow);
+}
+.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-tag {
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  border-radius: var(--radius);
+  background: var(--ender-glow);
+  color: var(--ender);
+  border: 1px solid var(--border-bright);
+  font-weight: 500;
+  transition: all var(--transition);
+}
+.skill-tag:hover { border-color: var(--ender); color: var(--text); background: var(--ender-glow); }
+
+/* ========== 证书 — 成就画廊 ========== */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.cert-card {
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  cursor: zoom-in;
+  position: relative;
+  transition: all var(--transition);
+}
+.cert-card:hover {
+  box-shadow: var(--shadow-purple);
+  transform: translateY(-2px);
+  border-color: var(--border-bright);
+}
+.cert-card:hover .cert-name { color: var(--gold); }
+/* 左侧证书图标 */
+.cert-icon {
+  width: 38px; height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(252,211,77,0.15), rgba(167,139,250,0.1));
+  border: 1px solid rgba(252,211,77,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+.cert-card:hover .cert-icon {
+  background: linear-gradient(135deg, rgba(252,211,77,0.25), rgba(167,139,250,0.15));
+  box-shadow: 0 0 12px rgba(252,211,77,0.2);
+}
+.cert-icon svg { width: 20px; height: 20px; color: var(--gold); }
+/* 文字信息 */
+.cert-info { flex: 1; min-width: 0; }
+.cert-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 2px;
+  color: var(--text);
+  transition: color var(--transition);
+}
+.cert-issuer { font-size: 0.78rem; color: var(--gold); }
+.cert-date { font-size: 0.72rem; color: var(--text-3); font-family: var(--font-mono); margin-top: 2px; }
+.cert-desc { font-size: 0.78rem; color: var(--text-2); margin-top: 4px; line-height: 1.55; }
+/* 右侧放大提示 */
+.cert-zoom-hint {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-3);
+  opacity: 0.5;
+  transition: all var(--transition);
+  align-self: center;
+}
+.cert-card:hover .cert-zoom-hint {
+  opacity: 1;
+  color: var(--ender);
+  background: var(--ender-glow);
+}
+.cert-zoom-hint svg { width: 14px; height: 14px; }
+/* 证书占位提示 */
+.cert-placeholder {
+  padding: 24px;
+  text-align: center;
+  border: 1px dashed var(--border-bright);
+  background: rgba(90,141,255,0.03);
+  grid-column: 1 / -1;
+}
+.cert-placeholder-text {
+  font-size: 0.88rem;
+  color: var(--text-2);
+}
+.cert-placeholder-text strong { color: var(--ender); }
+
+/* ========== 证书 Lightbox ========== */
+.cert-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(5,3,12,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+.cert-lightbox.show { opacity: 1; pointer-events: auto; }
+.cert-lightbox img {
+  max-width: 100%;
+  max-height: 86vh;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-bright);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 32px var(--ender-glow);
+  object-fit: contain;
+}
+.cert-lightbox-close {
+  position: absolute;
+  top: 20px; right: 24px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(30,28,62,0.8);
+  border: 1px solid var(--border-bright);
+  color: var(--text);
+  font-size: 1.4rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.cert-lightbox-close:hover { background: var(--ender-glow); color: var(--ender); transform: rotate(90deg); }
+.cert-lightbox-caption {
+  position: absolute;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background: rgba(30,28,62,0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 90%;
+}
+.cert-lightbox-caption strong { color: var(--gold); }
+
+/* ========== 教育 ========== */
+.edu-grid { display: grid; gap: 14px; max-width: 680px; margin: 0 auto; }
+.edu-card { padding: 20px; }
+.edu-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 6px; }
+.edu-school { font-weight: 600; font-size: 1rem; }
+.edu-period { font-size: 0.78rem; color: var(--text-3); font-family: var(--font-mono); }
+.edu-major { color: var(--ender); font-size: 0.88rem; margin-bottom: 6px; }
+.edu-desc { font-size: 0.86rem; color: var(--text-2); line-height: 1.8; }
+
+/* ========== 兴趣爱好 — 五角对称 ========== */
+.hobby-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.hobby-card { padding: 16px 10px; text-align: center; }
+.hobby-icon {
+  width: 40px; height: 40px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border-bright);
+  background: linear-gradient(135deg, rgba(90,141,255,0.1), rgba(167,139,250,0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hobby-icon svg { width: 18px; height: 18px; }
+.hobby-card:nth-child(1) .hobby-icon svg { color: var(--ender); }
+.hobby-card:nth-child(2) .hobby-icon svg { color: var(--purple); }
+.hobby-card:nth-child(3) .hobby-icon svg { color: var(--gold); }
+.hobby-card:nth-child(4) .hobby-icon svg { color: var(--magenta); }
+.hobby-card:nth-child(5) .hobby-icon svg { color: var(--ender); }
+.hobby-name { font-size: 0.88rem; font-weight: 600; }
+.hobby-desc { font-size: 0.74rem; color: var(--text-3); margin-top: 2px; }
+
+/* ========== 页脚 ========== */
+footer {
+  text-align: center;
+  padding: 40px 20px 32px;
+  margin-top: 20px;
+  position: relative;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 1px;
+  background: linear-gradient(90deg, rgba(167,139,250,0), rgba(167,139,250,0.5), rgba(167,139,250,0));
+}
+.footer-motto {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--ender) 0%, var(--purple) 50%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--ender); /* fallback */
+  filter: drop-shadow(0 0 12px var(--ender-glow));
+}
+.footer-info { font-size: 0.78rem; color: var(--text-3); font-family: var(--font-mono); }
+
+/* ========== 返回顶部 ========== */
+.back-top {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--ender), var(--purple));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(90,141,255,0.3);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all var(--transition);
+  z-index: 90;
+}
+.back-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.back-top svg { width: 20px; height: 20px; }
+
+/* ========== Toast ========== */
+.toast {
+  position: fixed;
+  bottom: 80px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-bright);
+  color: var(--text);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  box-shadow: var(--shadow-float);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 250ms ease;
+  z-index: 200;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ========== 动画 ========== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 500ms ease, transform 500ms ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ========== 旧设备兼容降级 ========== */
+/* 不支持 CSS Grid 的浏览器使用 flex 布局 */
+@supports not (display: grid) {
+  .highlights, .project-grid, .skill-grid, .cert-grid, .edu-grid, .hobby-grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .highlights > *, .project-grid > *, .skill-grid > *, .cert-grid > *, .edu-grid > *, .hobby-grid > * {
+    flex: 1 1 200px;
+    margin: 6px;
+  }
+}
+/* 不支持 filter:blur 的设备隐藏光圈，避免布局异常 */
+@supports not (filter: blur(1px)) {
+  .hero::before { display: none; }
+}
+/* flexbox gap 不支持时用 margin 替代 */
+@supports not (gap: 1px) {
+  .nav-links > * + * { margin-left: 2px; }
+  .hero-tags > * + * { margin-left: 8px; }
+  .hero-contact > * + * { margin-left: 12px; }
+  .tabs > * + * { margin-left: 4px; }
+}
+
+/* ========== 打印 ========== */
+@media print {
+  body { background: #fff; color: #1a0d2e; font-size: 12px; }
+  body::before, body::after { display: none; }
+  .navbar, .back-top, .nav-actions, .hero-contact, .toast { display: none !important; }
+  section { padding: 12px 0; page-break-inside: avoid; }
+  .tab-panel { display: block !important; }
+  .tab-btn { display: none; }
+  .floating-card { border: 1px solid #ccc; box-shadow: none; }
+  .hero-name, .highlight-num, .footer-motto { -webkit-text-fill-color: #1a0d2e; filter: none; }
+  .cert-lightbox { display: none !important; }
+  .cert-card { cursor: default; page-break-inside: avoid; }
+  .cert-zoom-hint { display: none !important; }
+  a[href]:after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+}
+/* ========== 交互动画增强 ========== */
+/* 顶部阅读进度条 */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--ender), var(--purple), var(--magenta));
+  z-index: 200; border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 10px var(--ender-glow);
+  pointer-events: none;
+}
+/* 鼠标跟随光晕 */
+#cursor-glow {
+  position: fixed; left: 0; top: 0; width: 360px; height: 360px;
+  border-radius: 50%; pointer-events: none; z-index: 3;
+  background: radial-gradient(circle, rgba(90,141,255,0.10) 0%, rgba(167,139,250,0.06) 45%, transparent 70%);
+  opacity: 0.7; transition: opacity 400ms ease;
+}
+[data-theme="light"] #cursor-glow {
+  background: radial-gradient(circle, rgba(90,141,255,0.10) 0%, rgba(124,58,237,0.05) 45%, transparent 70%);
+}
+/* 星尘粒子 */
+.stardust {
+  position: fixed; z-index: 9998; pointer-events: none;
+  border-radius: 50%;
+  animation: stardust-rise 0.8s ease-out forwards;
+  box-shadow: 0 0 8px currentColor;
+}
+@keyframes stardust-rise {
+  0% { opacity: 0.95; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-28px) scale(0.15); }
+}
+/* 卡片 3D 倾斜 */
+.floating-card, .dragon-card {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px));
+  transition: transform 260ms ease, border-color var(--transition), box-shadow var(--transition);
+  will-change: transform;
+}
+.floating-card:hover { --ty: -3px; }
+.dragon-card:hover { --ty: -4px; }
+/* 按钮悬停微动 */
+.btn, .tab-btn, .icon-btn {
+  transition: transform 180ms ease, color var(--transition), background var(--transition),
+              border-color var(--transition), box-shadow var(--transition);
+}
+.btn:hover, .tab-btn:hover, .icon-btn:hover { transform: scale(1.05); }
+.btn:active, .tab-btn:active, .icon-btn:active { transform: scale(0.96); }
+/* 主题切换图标旋转 */
+#themeToggle svg { transition: transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+#themeToggle.spin svg { transform: rotate(180deg); }
+/* 卡片交错渐入 */
+.reveal.visible .floating-card,
+.reveal.visible .skill-group,
+.reveal.visible .edu-card,
+.reveal.visible .hobby-card {
+  animation: card-in 520ms cubic-bezier(0.22, 0.9, 0.35, 1) backwards;
+}
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* 技能数字 */
+.skill-pct { min-width: 38px; text-align: right; }
+.skill-bar:hover .skill-bar-fill {
+  filter: brightness(1.25);
+  box-shadow: 0 0 14px var(--ender-glow), 0 0 4px var(--purple-glow);
+}
+.skill-bar:hover .skill-bar-name span:first-child { color: var(--ender); }
+/* 打印/降级 */
+@media print {
+  #cursor-glow, .stardust, #scroll-progress { display: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .reveal.visible .floating-card, .reveal.visible .skill-group,
+  .reveal.visible .edu-card, .reveal.visible .hobby-card { animation: none !important; }
+  .floating-card, .dragon-card { transform: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #cursor-glow, .stardust { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-name">李弈德</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero">简介</a></li>
+      <li><a href="#highlights">亮点</a></li>
+      <li><a href="#showcase">游戏</a></li>
+      <li><a href="#experience">经历</a></li>
+      <li><a href="#projects">项目</a></li>
+      <li><a href="#skills">技能</a></li>
+      <li><a href="#certs">证书</a></li>
+      <li><a href="#education">教育</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" title="切换深浅色" aria-label="切换深浅色">
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" title="打印 / 导出PDF" aria-label="打印">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="菜单" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- 末地背景装饰 -->
+<div class="end-deco deco-endstone-1"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" fill="#d8d0a8"/><rect x="0" y="0" width="4" height="4" fill="#c8c098"/><rect x="12" y="4" width="4" height="4" fill="#c8c098"/><rect x="4" y="8" width="4" height="4" fill="#c8c098"/><rect x="8" y="12" width="4" height="4" fill="#c8c098"/><rect x="2" y="6" width="2" height="2" fill="#a89e6c"/><rect x="10" y="2" width="2" height="2" fill="#a89e6c"/><rect x="6" y="10" width="2" height="2" fill="#a89e6c"/><rect x="14" y="14" width="2" height="2" fill="#a89e6c"/></svg></div>
+<div class="end-deco deco-endstone-2"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" fill="#d8d0a8"/><rect x="0" y="4" width="4" height="4" fill="#c8c098"/><rect x="8" y="0" width="4" height="4" fill="#c8c098"/><rect x="4" y="12" width="4" height="4" fill="#c8c098"/><rect x="12" y="8" width="4" height="4" fill="#c8c098"/><rect x="6" y="6" width="2" height="2" fill="#a89e6c"/><rect x="2" y="10" width="2" height="2" fill="#a89e6c"/></svg></div>
+<div class="end-deco deco-endstone-3"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" fill="#d8d0a8"/><rect x="4" y="0" width="4" height="4" fill="#c8c098"/><rect x="0" y="8" width="4" height="4" fill="#c8c098"/><rect x="8" y="8" width="4" height="4" fill="#c8c098"/><rect x="12" y="4" width="4" height="4" fill="#c8c098"/><rect x="10" y="12" width="2" height="2" fill="#a89e6c"/></svg></div>
+<div class="end-deco deco-enderman"><svg viewBox="0 0 11 15" shape-rendering="crispEdges"><rect x="3" y="0" width="5" height="4" fill="#161616"/><rect x="3" y="1" width="2" height="1" fill="#5a8dff"/><rect x="6" y="1" width="2" height="1" fill="#5a8dff"/><rect x="2" y="4" width="7" height="6" fill="#161616"/><rect x="1" y="5" width="1" height="4" fill="#161616"/><rect x="9" y="5" width="1" height="4" fill="#161616"/><rect x="3" y="10" width="2" height="5" fill="#161616"/><rect x="6" y="10" width="2" height="5" fill="#161616"/></svg></div>
+<div class="end-deco deco-shulker"><svg viewBox="0 0 12 14" shape-rendering="crispEdges"><rect x="2" y="4" width="8" height="8" fill="#9b6bbf"/><rect x="3" y="5" width="6" height="6" fill="#b585d4"/><rect x="1" y="3" width="10" height="2" fill="#7a4fa0"/><rect x="4" y="0" width="4" height="3" fill="#7a4fa0"/><rect x="5" y="1" width="2" height="1" fill="#5a8dff"/><rect x="0" y="12" width="12" height="2" fill="#5a3a7a"/></svg></div>
+<div class="end-deco deco-pearl"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><circle cx="8" cy="8" r="6" fill="#1a3a5a"/><circle cx="8" cy="8" r="5" fill="#2d5fda"/><circle cx="6" cy="6" r="2" fill="#5a8dff"/><circle cx="7" cy="7" r="1" fill="#a0c4ff"/></svg></div>
+<div class="end-deco deco-pearl2"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><circle cx="8" cy="8" r="6" fill="#1a3a5a"/><circle cx="8" cy="8" r="5" fill="#2d5fda"/><circle cx="6" cy="6" r="2" fill="#5a8dff"/><circle cx="7" cy="7" r="1" fill="#a0c4ff"/></svg></div>
+
+<!-- 新增末地石制品 -->
+<!-- 末地石砖 -->
+<div class="end-deco deco-endstone-brick"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" fill="#d8d0a8"/><rect x="0" y="0" width="7" height="7" fill="#c8c098"/><rect x="9" y="0" width="7" height="7" fill="#c8c098"/><rect x="0" y="9" width="3" height="7" fill="#c8c098"/><rect x="5" y="9" width="6" height="7" fill="#c8c098"/><rect x="13" y="9" width="3" height="7" fill="#c8c098"/><rect x="7" y="0" width="2" height="16" fill="#a89e6c"/><rect x="0" y="7" width="16" height="2" fill="#a89e6c"/><rect x="4" y="9" width="1" height="1" fill="#a89e6c"/><rect x="11" y="9" width="1" height="1" fill="#a89e6c"/><rect x="2" y="2" width="1" height="1" fill="#a89e6c"/><rect x="11" y="3" width="1" height="1" fill="#a89e6c"/></svg></div>
+
+<!-- 末地烛 -->
+<div class="end-deco deco-end-rod"><svg viewBox="0 0 6 24" shape-rendering="crispEdges"><rect x="2" y="0" width="2" height="2" fill="#ffffff"/><rect x="1" y="1" width="4" height="1" fill="#f0e8c8"/><rect x="2" y="2" width="2" height="16" fill="#e8e0c0"/><rect x="1" y="2" width="1" height="16" fill="#f8f0d8"/><rect x="4" y="2" width="1" height="16" fill="#c8c098"/><rect x="1" y="18" width="4" height="2" fill="#c8c098"/><rect x="0" y="20" width="6" height="4" fill="#a89e6c"/></svg></div>
+
+<!-- 紫珀块 -->
+<div class="end-deco deco-purpur"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" fill="#9b6bbf"/><rect x="0" y="0" width="8" height="8" fill="#a87ac9"/><rect x="8" y="8" width="8" height="8" fill="#a87ac9"/><rect x="0" y="8" width="8" height="8" fill="#8a5caf"/><rect x="8" y="0" width="8" height="8" fill="#8a5caf"/><rect x="2" y="2" width="2" height="2" fill="#b585d4"/><rect x="12" y="2" width="2" height="2" fill="#b585d4"/><rect x="2" y="12" width="2" height="2" fill="#b585d4"/><rect x="12" y="12" width="2" height="2" fill="#b585d4"/><rect x="7" y="0" width="2" height="16" fill="#7a4fa0"/><rect x="0" y="7" width="16" height="2" fill="#7a4fa0"/></svg></div>
+
+<!-- 末地传送门框架 -->
+<div class="end-deco deco-portal-frame"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" fill="#1a1a2a"/><rect x="1" y="1" width="14" height="14" fill="#d8d0a8"/><rect x="2" y="2" width="12" height="12" fill="#1a1a2a"/><rect x="3" y="3" width="10" height="10" fill="#0a1a2a"/><circle cx="8" cy="8" r="3" fill="#1aff66" opacity="0.8"/><circle cx="8" cy="8" r="2" fill="#0a3a1a"/><circle cx="8" cy="8" r="1" fill="#1aff66"/><rect x="0" y="0" width="16" height="1" fill="#a89e6c"/><rect x="0" y="15" width="16" height="1" fill="#a89e6c"/></svg></div>
+
+<!-- 龙蛋 -->
+<div class="end-deco deco-dragon-egg"><svg viewBox="0 0 10 14" shape-rendering="crispEdges"><ellipse cx="5" cy="9" rx="4" ry="4" fill="#0a0512"/><rect x="2" y="3" width="6" height="8" fill="#1a0a1f"/><rect x="1" y="5" width="8" height="6" fill="#1a0a1f"/><ellipse cx="5" cy="9" rx="3" ry="3" fill="#2a1a3a"/><circle cx="3" cy="6" r="1" fill="#5a2a7a"/><circle cx="6" cy="7" r="1" fill="#5a2a7a"/><circle cx="4" cy="9" r="1" fill="#5a2a7a"/><circle cx="7" cy="10" r="1" fill="#5a2a7a"/><circle cx="2" cy="8" r="1" fill="#5a2a7a"/><circle cx="5" cy="11" r="1" fill="#5a2a7a"/><circle cx="4" cy="5" r="0.5" fill="#8a4abf"/><circle cx="6" cy="8" r="0.5" fill="#8a4abf"/></svg></div>
+
+<!-- 末影水晶 -->
+<div class="end-deco deco-end-crystal"><svg viewBox="0 0 12 12" shape-rendering="crispEdges"><rect x="2" y="2" width="8" height="8" fill="#5a3a7a"/><rect x="3" y="3" width="6" height="6" fill="#7a5a9a"/><rect x="4" y="4" width="4" height="4" fill="#b585d4"/><rect x="5" y="5" width="2" height="2" fill="#ffffff"/><rect x="0" y="5" width="2" height="2" fill="#9b6bbf"/><rect x="10" y="5" width="2" height="2" fill="#9b6bbf"/><rect x="5" y="0" width="2" height="2" fill="#9b6bbf"/><rect x="5" y="10" width="2" height="2" fill="#9b6bbf"/></svg></div>
+
+<!-- 末影人 2 — 左下角，朝向相反 -->
+<div class="end-deco deco-enderman-2"><svg viewBox="0 0 11 15" shape-rendering="crispEdges"><rect x="3" y="0" width="5" height="4" fill="#161616"/><rect x="3" y="1" width="2" height="1" fill="#5a8dff"/><rect x="6" y="1" width="2" height="1" fill="#5a8dff"/><rect x="2" y="4" width="7" height="6" fill="#161616"/><rect x="0" y="5" width="2" height="3" fill="#161616"/><rect x="9" y="5" width="2" height="3" fill="#161616"/><rect x="3" y="10" width="2" height="5" fill="#161616"/><rect x="6" y="10" width="2" height="5" fill="#161616"/><rect x="2" y="11" width="1" height="3" fill="#161616"/></svg></div>
+
+<main id="app"></main>
+
+<button class="back-top" id="backTop" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<div class="toast" id="toast"></div>
+
+<script>
+// ========== 简历数据 ==========
+const resume = {
+  name: '李弈德',
+  phone: '18510753550',
+  phoneDisplay: '185 1075 3550',
+  tags: [
+    { text: '低空飞行器装备技术', cls: '' },
+    { text: 'AI工具应用', cls: 'purple' },
+    { text: '2026级', cls: 'gold' },
+    { text: '航修精神', cls: '' },
+  ],
+  quote: '人生究竟是既定的轨道，还是无垠的旷野？我的答案是：在万米高空，铺设属于自己的航路。',
+  summary: '北京启蒙、衡水磨砺、长沙逐梦。即将进入长沙航空职业技术学院主修低空飞行器装备技术，立志成为低空经济领域的实干型技术新兵。擅长利用AI工具高效产出可视化成果，兼具执行力与创新力。',
+  motto: '心怀旷野之志，脚踏既定之轨。以技术为翼，向低空飞行。',
+
+  highlights: [
+    { num: '数十次', label: '国旗护卫队零失误升降旗' },
+    { num: '5+', label: '种 AI 工具深度使用' },
+    { num: '2026届', label: '浪尖儿优秀大学生预备序列' },
+    { num: '2城', label: '跨地域教育背景（北京·衡水）' },
+  ],
+
+  experience: [
+    {
+      tab: '校园经历',
+      items: [
+        {
+          title: '高中国旗护卫队执行旗手',
+          org: '衡水',
+          date: '高中阶段',
+          desc: [
+            '负责日常及成人礼等重大活动的升旗仪式',
+            '零失误完成数十次出旗/升旗流程',
+            '培养了极强的执行力和心理素质',
+          ],
+        },
+        {
+          title: '社区志愿服务',
+          org: '学校组织',
+          date: '多次参与',
+          desc: [
+            '积极参与学校组织的社区志愿服务活动',
+            '具备团队协作与奉献精神',
+          ],
+        },
+        {
+          title: '浪尖儿·2026届优秀大学生预备序列',
+          org: '浪尖儿',
+          date: '已入选',
+          desc: [
+            '与先锋同龄人共同成长，持续输入前沿视野',
+            '保持对科技、人文与个人成长交汇点的关注',
+          ],
+        },
+      ],
+    },
+  ],
+
+  projects: [
+    {
+      tab: 'AI作品',
+      items: [
+        {
+          name: 'AI驱动的个人简历网站',
+          desc: '利用AI工具（Trae CN）从零构建设计精美的响应式个人网站，内联CSS/JS单文件部署，末地星空风设计。',
+          tech: ['HTML5', 'CSS3', 'JavaScript', 'Trae CN'],
+          result: '单文件部署，零外部依赖，深浅色+打印支持',
+          iconKey: 'code',
+        },
+        {
+          name: 'AI音乐/音频创作',
+          desc: '利用AI工具进行音乐与音频创作，将创意快速转化为可听化成果。',
+          tech: ['AI音频工具', '创意设计'],
+          result: '快速产出个性化音频内容',
+          iconKey: 'music',
+        },
+        {
+          name: 'AI辅助PPT制作',
+          desc: '结合AI工具与办公软件，高效整合信息，制作结构清晰、视觉精美的演示文稿。',
+          tech: ['AI工具', 'Office', '信息设计'],
+          result: '提升信息整合与展示效率',
+          iconKey: 'presentation',
+        },
+      ],
+    },
+  ],
+
+  skills: [
+    {
+      category: 'AI工具',
+      icon: 'cpu',
+      bars: [
+        { name: 'Trae CN', level: 85 },
+        { name: 'DeepSeek', level: 80 },
+        { name: 'Kimi', level: 75 },
+        { name: 'AutoClaw', level: 70 },
+      ],
+    },
+    {
+      category: '前端技术',
+      icon: 'code',
+      bars: [
+        { name: 'HTML5', level: 75 },
+        { name: 'CSS3', level: 70 },
+        { name: 'JavaScript', level: 65 },
+      ],
+    },
+    {
+      category: '工具与软件',
+      icon: 'tool',
+      tags: ['Office套件', 'PPT设计', 'AI音乐创作', '网页游戏开发', '信息整合'],
+    },
+    {
+      category: '专业领域',
+      icon: 'plane',
+      tags: ['低空飞行器装备', '航修技术', '低空经济', '工程化思维'],
+    },
+  ],
+
+  // 证书 — 15 张 AI 相关技能认证
+  certificates: [
+    // 深势科技
+    { name: 'Python基础能力认证', issuer: '深势科技 · AI4S Cup', date: '2024', desc: 'AI for Science 基础编程能力认证', img: '深势科技AI4S Cup-Python基础能力认证.png' },
+    // 阿里云（8 张）
+    { name: 'RAG应用构建及优化', issuer: '阿里云', date: '2024', desc: '检索增强生成应用开发与调优', img: '阿里云RAG应用构建及优化.png' },
+    { name: '利用大模型提升内容生产能力', issuer: '阿里云', date: '2024', desc: '大模型驱动的内容创作实践', img: '阿里云利用大模型提升内容生产能力.png' },
+    { name: 'VISION人工智能设计进阶', issuer: '阿里云', date: '2024', desc: 'AI 视觉设计进阶能力认证', img: '阿里云VISION人工智能设计进阶.png' },
+    { name: 'VISION人工智能设计入门', issuer: '阿里云', date: '2024', desc: 'AI 视觉设计基础认证', img: '阿里云VISION人工智能设计入门.png' },
+    { name: 'Spring AI应用开发入门', issuer: '阿里云', date: '2024', desc: 'Java 生态 AI 应用开发实践', img: '阿里云Spring AI应用开发入门.png' },
+    { name: '基于PAI ArtLab的AIGC设计基础', issuer: '阿里云', date: '2024', desc: 'PAI ArtLab AIGC 设计能力认证', img: '阿里云基于PAI ArtLab的AIGC设计基础.png' },
+    { name: '基于百炼平台构建智能体应用', issuer: '阿里云', date: '2024', desc: '百炼平台 Agent 应用开发', img: '阿里云基于百炼平台构建智能体应用.png' },
+    { name: '基于通义灵码实现高效AI编码实践', issuer: '阿里云', date: '2024', desc: '通义灵码 AI 编程助手实践认证', img: '阿里云基于通义灵码实现高效AI编码实践.png' },
+    // 阿里巴巴（2 张）
+    { name: '人工智能训练师（初级）', issuer: '阿里巴巴', date: '2024', desc: 'AI 训练师岗位基础认证', img: '阿里巴巴人工智能训练师（初级）.png' },
+    { name: '人工智能训练师高级', issuer: '阿里巴巴', date: '2024', desc: 'AI 训练师高级技能认证', img: '阿里巴巴人工智能训练师高级.png' },
+    // 科大讯飞（4 张）
+    { name: 'RAG工程师', issuer: '科大讯飞 · AI 大学', date: '2024', desc: '检索增强生成工程师认证', img: '科大讯飞RAG工程师Ai大学认证证书.png' },
+    { name: '智能体工程师', issuer: '科大讯飞 · AI 大学', date: '2024', desc: '智能体应用开发工程师认证', img: '科大讯飞智能体工程师Ai大学认证证书.png' },
+    { name: '微调工程师', issuer: '科大讯飞 · AI 大学', date: '2024', desc: '大模型微调工程师认证', img: '科大讯飞微调工程师Ai大学认证证书.png' },
+    { name: 'Prompt工程师', issuer: '科大讯飞 · AI 大学', date: '2024', desc: '提示词工程师认证', img: '科大讯飞Prompt工程师Ai大学认证证书.png' },
+  ],
+
+  education: [
+    {
+      school: '长沙航空职业技术学院',
+      period: '2026级 · 即将入学',
+      major: '低空飞行器装备技术',
+      desc: '以"航修精神"为尺，立志成为低空经济领域的实干型技术新兵。系统学习低空飞行器装备维护、检测与修理技术。',
+    },
+    {
+      school: '衡水（初中·高中）',
+      period: '中学阶段',
+      major: '基础教育',
+      desc: '衡水的生活磨砺了时间管理与抗压意志，脚踏实地死磕细节，培养了极强的自律能力与执行力。',
+    },
+    {
+      school: '北京（小学）',
+      period: '小学阶段',
+      major: '启蒙教育',
+      desc: '北京的经历开阔了视野与认知，保持好奇心与仰望星空的能力。两种教育生态的交织让我兼具创新思维与务实精神。',
+    },
+  ],
+
+  hobbies: [
+    { name: '深度阅读', desc: '科技·人文·成长', icon: 'book' },
+    { name: '思辨探索', desc: '关注交叉领域', icon: 'brain' },
+    { name: 'AI创作', desc: '音乐·网页·PPT', icon: 'cpu' },
+    { name: '航空科技', desc: '低空飞行器', icon: 'plane' },
+    { name: '我的世界', desc: '生存·整合包', icon: 'cube' },
+  ],
+};
+
+// ========== SVG 图标库 ==========
+const icons = {
+  phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+  book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  brain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3 3 3 0 0 0-3 3 3 3 0 0 0-1 5.83V16a3 3 0 0 0 3 3 3 3 0 0 0 4 0 3 3 0 0 0 4 0 3 3 0 0 0 3-3v-2.17A3 3 0 0 0 18 8a3 3 0 0 0-3-3 3 3 0 0 0-3-3z"/></svg>',
+  cpu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>',
+  plane: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
+  code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+  tool: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+  game: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="15" cy="11" r="1"/><circle cx="18" cy="13" r="1"/></svg>',
+  music: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  presentation: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="1"/><path d="M12 17v4M8 21h8"/></svg>',
+  cube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+  award: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+};
+
+// ========== 末影龙之眼头像 ==========
+const pixelAvatar = `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="5" width="2" height="2" fill="#1a1030"/>
+  <rect x="4" y="4" width="2" height="1" fill="#1a1030"/>
+  <rect x="4" y="5" width="2" height="2" fill="#2d5fda"/>
+  <rect x="6" y="4" width="4" height="4" fill="#1a1030"/>
+  <rect x="6" y="5" width="4" height="2" fill="#5a8dff"/>
+  <rect x="7" y="5" width="2" height="2" fill="#a0c4ff"/>
+  <rect x="7" y="5" width="1" height="1" fill="#ffffff"/>
+  <rect x="10" y="4" width="2" height="1" fill="#1a1030"/>
+  <rect x="10" y="5" width="2" height="2" fill="#2d5fda"/>
+  <rect x="12" y="5" width="2" height="2" fill="#1a1030"/>
+  <rect x="4" y="7" width="2" height="1" fill="#1a1030"/>
+  <rect x="10" y="7" width="2" height="1" fill="#1a1030"/>
+  <rect x="5" y="8" width="6" height="1" fill="#1a1030"/>
+  <rect x="6" y="9" width="4" height="1" fill="#1a1030"/>
+  <rect x="7" y="10" width="2" height="1" fill="#1a1030"/>
+</svg>`;
+
+// ========== 渲染函数 ==========
+function el(tag, className, html) {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+function renderHero() {
+  const sec = el('section', 'hero reveal');
+  sec.id = 'hero';
+  sec.innerHTML = `
+    <div class="hero-avatar">${pixelAvatar}</div>
+    <h1 class="hero-name">${resume.name}</h1>
+    <div class="hero-tags">
+      ${resume.tags.map(t => `<span class="tag ${t.cls}">${t.text}</span>`).join('')}
+    </div>
+    <p class="hero-quote">${resume.quote}</p>
+    <p class="hero-desc">${resume.summary}</p>
+    <div class="hero-contact">
+      <a href="tel:${resume.phone}" class="btn btn-primary">${icons.phone}<span>${resume.phoneDisplay}</span></a>
+      <button class="btn btn-outline" id="copyPhone">${icons.copy}<span>复制电话</span></button>
+    </div>
+  `;
+  return sec;
+}
+
+function renderHighlights() {
+  const sec = el('section', 'reveal');
+  sec.id = 'highlights';
+  sec.innerHTML = `
+    <h2 class="section-title"><span class="label" data-en="Highlights">亮点成果</span></h2>
+    <div class="highlights">
+      ${resume.highlights.map(h => `
+        <div class="floating-card highlight-card">
+          <div class="highlight-num">${h.num}</div>
+          <div class="highlight-label">${h.label}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  return sec;
+}
+
+function renderExperience() {
+  const sec = el('section', 'reveal');
+  sec.id = 'experience';
+  const tabs = resume.experience;
+  let tabsHTML = '<div class="tabs" role="tablist">';
+  tabs.forEach((t, i) => {
+    tabsHTML += `<button class="tab-btn" role="tab" aria-selected="${i === 0}" aria-controls="exp-panel-${i}" id="exp-tab-${i}" tabindex="${i === 0 ? 0 : -1}">${t.tab}</button>`;
+  });
+  tabsHTML += '</div>';
+  let panelsHTML = '';
+  tabs.forEach((t, i) => {
+    panelsHTML += `<div class="tab-panel${i === 0 ? ' active' : ''}" id="exp-panel-${i}" role="tabpanel" aria-labelledby="exp-tab-${i}"><div class="timeline">`;
+    t.items.forEach(item => {
+      panelsHTML += `
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <span class="timeline-title">${item.title}</span>
+            <span class="timeline-date">${item.date}</span>
+          </div>
+          <div class="timeline-org">${item.org}</div>
+          <ul class="timeline-desc">${item.desc.map(d => `<li>${d}</li>`).join('')}</ul>
+        </div>`;
+    });
+    panelsHTML += '</div></div>';
+  });
+  sec.innerHTML = `<h2 class="section-title"><span class="label" data-en="Experience">实践经历</span></h2>${tabsHTML}${panelsHTML}`;
+  return sec;
+}
+
+// 末影龙游戏展示区渲染
+function renderDragonShowcase() {
+  const sec = el('section', 'dragon-showcase reveal');
+  sec.id = 'showcase';
+  const wing = `<span class="dragon-wing"><svg viewBox="0 0 28 20" shape-rendering="crispEdges"><path d="M2 10 L8 4 L14 8 L14 12 L8 16 Z M14 8 L20 4 L26 10 L20 16 L14 12 Z" fill="#5a8dff" opacity="0.6"/></svg></span>`;
+  sec.innerHTML = `
+    <div class="dragon-title">
+      ${wing}
+      <h2>游戏作品</h2>
+      <p>Game Showcase</p>
+      ${wing}
+    </div>
+    <div class="dragon-grid">
+      <div class="dragon-card">
+        <div class="dragon-banner">
+          <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid slice">
+            <rect width="200" height="100" fill="#0a0a1a"/>
+            ${Array.from({length:30},(_,i)=>`<rect x="${i*7}" y="${20+Math.sin(i*0.5)*15}" width="3" height="3" fill="#5a8dff" opacity="${0.3+Math.random()*0.4}"/>`).join('')}
+            ${Array.from({length:20},(_,i)=>`<rect x="${i*10+5}" y="${50+Math.cos(i*0.7)*20}" width="2" height="2" fill="#a78bfa" opacity="${0.2+Math.random()*0.3}"/>`).join('')}
+            <rect x="80" y="35" width="8" height="6" fill="#fcd34d"/>
+            <rect x="84" y="33" width="4" height="3" fill="#fff"/>
+            <rect x="88" y="36" width="6" height="4" fill="#5a8dff"/>
+            <rect x="70" y="42" width="4" height="2" fill="#5a8dff" opacity="0.6"/>
+            <rect x="95" y="40" width="3" height="2" fill="#5a8dff" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="dragon-body">
+          <div class="dragon-name">LYD的飞机大战 <span class="badge">STG</span></div>
+          <div class="dragon-desc">赛博霓虹竖版弹幕射击：3架战机（蓄力/必杀/僚机）、8级火力、擦弹与连击段位、金坦克乱入、分裂者、击杀暴击、多阶段Boss残血狂暴，战役+无尽双模式。</div>
+          <div class="dragon-stats">
+            <span class="dragon-stat">3架战机</span>
+            <span class="dragon-stat">8级火力</span>
+            <span class="dragon-stat">3阶段Boss</span>
+            <span class="dragon-stat">连击+暴击</span>
+          </div>
+          <a href="/plane/" target="_blank" rel="noopener" class="dragon-play">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>进入游戏</span>
+          </a>
+        </div>
+      </div>
+      <div class="dragon-card">
+        <div class="dragon-banner">
+          <svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid slice">
+            <rect width="200" height="100" fill="#0a0a1a"/>
+            <rect x="0" y="70" width="200" height="30" fill="#1a2a1a" opacity="0.5"/>
+            ${Array.from({length:15},(_,i)=>{const x=10+i*12;const y=40+(i%3)*8;return `<rect x="${x}" y="${y}" width="8" height="8" fill="#8B6F47" opacity="0.6"/><rect x="${x}" y="${y}" width="8" height="2" fill="#5B9A2A"/>`}).join('')}
+            <rect x="40" y="48" width="12" height="10" fill="#5a8dff"/>
+            <rect x="44" y="44" width="4" height="4" fill="#a78bfa"/>
+            <rect x="52" y="50" width="6" height="2" fill="#fcd34d"/>
+            <rect x="120" y="52" width="10" height="9" fill="#aa4444" opacity="0.7"/>
+            <rect x="124" y="48" width="4" height="4" fill="#ff6666" opacity="0.5"/>
+            <rect x="128" y="53" width="5" height="2" fill="#ff4444" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="dragon-body">
+          <div class="dragon-name">LYD的坦克大战 <span class="badge">SLG</span></div>
+          <div class="dragon-desc">校园霓虹俯视角坦克对战：自爆兵冲撞、狙击手、Boss多阶段AI，8+道具（空袭/冻结/护盾）、连击计分、金坦克彩蛋、5关战役+无尽模式，支持移动端虚拟摇杆。</div>
+          <div class="dragon-stats">
+            <span class="dragon-stat">5种AI</span>
+            <span class="dragon-stat">8+道具</span>
+            <span class="dragon-stat">5关+无尽</span>
+            <span class="dragon-stat">连击+空袭</span>
+          </div>
+          <a href="/tank/" target="_blank" rel="noopener" class="dragon-play">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>进入游戏</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+  return sec;
+}
+
+function renderProjects() {
+  const sec = el('section', 'reveal');
+  sec.id = 'projects';
+  const tabs = resume.projects;
+  let tabsHTML = '<div class="tabs" role="tablist">';
+  tabs.forEach((t, i) => {
+    tabsHTML += `<button class="tab-btn" role="tab" aria-selected="${i === 0}" aria-controls="proj-panel-${i}" id="proj-tab-${i}" tabindex="${i === 0 ? 0 : -1}">${t.tab}</button>`;
+  });
+  tabsHTML += '</div>';
+  let panelsHTML = '';
+  tabs.forEach((t, i) => {
+    panelsHTML += `<div class="tab-panel${i === 0 ? ' active' : ''}" id="proj-panel-${i}" role="tabpanel" aria-labelledby="proj-tab-${i}"><div class="project-grid">`;
+    t.items.forEach(p => {
+      panelsHTML += `
+        <div class="floating-card project-card">
+          <div class="project-icon">${icons[p.iconKey] || icons.code}</div>
+          <div class="project-name">${p.name}</div>
+          <div class="project-desc">${p.desc}</div>
+          <div class="project-tech">${p.tech.map(t => `<span class="tech-badge">${t}</span>`).join('')}</div>
+          <div class="project-result">▸ ${p.result}</div>
+          ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="btn btn-outline project-link">${icons.game}<span>试玩</span></a>` : ''}
+        </div>`;
+    });
+    panelsHTML += '</div></div>';
+  });
+  sec.innerHTML = `<h2 class="section-title"><span class="label" data-en="Projects">项目作品</span></h2>${tabsHTML}${panelsHTML}`;
+  return sec;
+}
+
+function renderSkills() {
+  const sec = el('section', 'reveal');
+  sec.id = 'skills';
+  let grid = '<div class="skill-grid">';
+  resume.skills.forEach(s => {
+    grid += `<div class="skill-group"><h4>${icons[s.icon] || icons.code}${s.category}</h4>`;
+    if (s.bars) {
+      s.bars.forEach(b => {
+        grid += `<div class="skill-bar">
+          <div class="skill-bar-name"><span>${b.name}</span><span class="skill-pct" data-lv="${b.level}">0%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-level="${b.level}"></div></div>
+        </div>`;
+      });
+    }
+    if (s.tags) {
+      grid += '<div class="skill-tags">';
+      s.tags.forEach(t => { grid += `<span class="skill-tag">${t}</span>`; });
+      grid += '</div>';
+    }
+    grid += '</div>';
+  });
+  grid += '</div>';
+  sec.innerHTML = `<h2 class="section-title"><span class="label" data-en="Skills">技能矩阵</span></h2>${grid}`;
+  return sec;
+}
+
+function renderCertificates() {
+  const sec = el('section', 'reveal');
+  sec.id = 'certs';
+  let inner = '';
+  if (resume.certificates.length > 0) {
+    inner = '<div class="cert-grid">';
+    resume.certificates.forEach((c, i) => {
+      inner += `
+        <div class="floating-card cert-card" data-cert-idx="${i}" role="button" tabindex="0" aria-label="点击查看证书大图: ${c.name}">
+          <div class="cert-icon">${icons.award}</div>
+          <div class="cert-info">
+            <div class="cert-name">${c.name}</div>
+            <div class="cert-issuer">${c.issuer}</div>
+            <div class="cert-date">${c.date}</div>
+            <div class="cert-desc">${c.desc}</div>
+          </div>
+          <span class="cert-zoom-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></span>
+        </div>`;
+    });
+    inner += '</div>';
+    // 提示文字
+    inner += `<p style="text-align:center;font-size:0.78rem;color:var(--text-3);margin-top:16px;font-family:var(--font-mono);letter-spacing:1px;">点击任意证书卡片查看原图</p>`;
+    // Lightbox 容器
+    inner += `
+      <div class="cert-lightbox" id="certLightbox" aria-hidden="true">
+        <button class="cert-lightbox-close" id="certLightboxClose" aria-label="关闭">×</button>
+        <img id="certLightboxImg" src="" alt="">
+        <div class="cert-lightbox-caption" id="certLightboxCaption"></div>
+      </div>
+    `;
+  } else {
+    // 占位提示
+    inner = `
+      <div class="floating-card cert-placeholder">
+        <div class="cert-placeholder-text">
+          <strong>证书位置已预留</strong><br>
+          待补充AI相关技能证书信息
+        </div>
+      </div>
+    `;
+  }
+  sec.innerHTML = `<h2 class="section-title"><span class="label" data-en="Certificates">技能证书</span></h2>${inner}`;
+  // 绑定 Lightbox 事件
+  if (resume.certificates.length > 0) {
+    setupCertLightbox(sec, resume.certificates);
+  }
+  return sec;
+}
+
+// 证书 Lightbox 控制
+function setupCertLightbox(sec, certs) {
+  const lb = sec.querySelector('#certLightbox');
+  const lbImg = sec.querySelector('#certLightboxImg');
+  const lbCap = sec.querySelector('#certLightboxCaption');
+  const lbClose = sec.querySelector('#certLightboxClose');
+  if (!lb || !lbImg) return;
+  const open = (idx) => {
+    const c = certs[idx];
+    if (!c) return;
+    lbImg.src = encodeURI(c.img);
+    lbImg.alt = `${c.name} - ${c.issuer}`;
+    lbCap.innerHTML = `<strong>${c.name}</strong> · ${c.issuer} · ${c.date}`;
+    lb.classList.add('show');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = () => {
+    lb.classList.remove('show');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  };
+  sec.querySelectorAll('.cert-card').forEach(card => {
+    card.addEventListener('click', () => open(parseInt(card.dataset.certIdx, 10)));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(parseInt(card.dataset.certIdx, 10)); }
+    });
+  });
+  lbClose.addEventListener('click', close);
+  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lb.classList.contains('show')) close();
+  });
+}
+
+function renderEducation() {
+  const sec = el('section', 'reveal');
+  sec.id = 'education';
+  let grid = '<div class="edu-grid">';
+  resume.education.forEach(e => {
+    grid += `
+      <div class="floating-card edu-card">
+        <div class="edu-header">
+          <span class="edu-school">${e.school}</span>
+          <span class="edu-period">${e.period}</span>
+        </div>
+        <div class="edu-major">${e.major}</div>
+        <div class="edu-desc">${e.desc}</div>
+      </div>`;
+  });
+  grid += '</div>';
+  sec.innerHTML = `<h2 class="section-title"><span class="label" data-en="Education">教育背景</span></h2>${grid}`;
+  return sec;
+}
+
+function renderHobbies() {
+  const sec = el('section', 'reveal');
+  sec.id = 'hobbies';
+  let grid = '<div class="hobby-grid">';
+  resume.hobbies.forEach(h => {
+    grid += `
+      <div class="floating-card hobby-card">
+        <div class="hobby-icon">${icons[h.icon] || icons.book}</div>
+        <div class="hobby-name">${h.name}</div>
+        <div class="hobby-desc">${h.desc}</div>
+      </div>`;
+  });
+  grid += '</div>';
+  sec.innerHTML = `<h2 class="section-title"><span class="label" data-en="Hobbies">兴趣爱好</span></h2>${grid}`;
+  return sec;
+}
+
+function renderFooter() {
+  const f = el('footer', 'reveal');
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+  f.innerHTML = `
+    <div class="footer-motto">"${resume.motto}"</div>
+    <div class="footer-info">© ${now.getFullYear()} 李弈德 · 最后更新于 ${dateStr}</div>
+  `;
+  return f;
+}
+
+// ========== 挂载 ==========
+const app = document.getElementById('app');
+app.appendChild(renderHero());
+if (resume.highlights?.length) app.appendChild(renderHighlights());
+app.appendChild(renderDragonShowcase());
+if (resume.experience?.length) app.appendChild(renderExperience());
+if (resume.projects?.length) app.appendChild(renderProjects());
+if (resume.skills?.length) app.appendChild(renderSkills());
+app.appendChild(renderCertificates());
+if (resume.education?.length) app.appendChild(renderEducation());
+if (resume.hobbies?.length) app.appendChild(renderHobbies());
+app.appendChild(renderFooter());
+
+// ========== 交互 ==========
+const themeToggle = document.getElementById('themeToggle');
+const iconMoon = document.getElementById('iconMoon');
+const iconSun = document.getElementById('iconSun');
+const htmlEl = document.documentElement;
+// 主题持久化：用户选择优先，其次跟随系统
+const savedTheme = localStorage.getItem('lyd-theme');
+if (savedTheme === 'light' || savedTheme === 'dark') {
+  htmlEl.setAttribute('data-theme', savedTheme);
+  iconMoon.style.display = savedTheme === 'dark' ? 'block' : 'none';
+  iconSun.style.display = savedTheme === 'light' ? 'block' : 'none';
+} else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+  htmlEl.setAttribute('data-theme', 'light');
+  iconMoon.style.display = 'none';
+  iconSun.style.display = 'block';
+}
+themeToggle.addEventListener('click', () => {
+  const cur = htmlEl.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  htmlEl.setAttribute('data-theme', next);
+  localStorage.setItem('lyd-theme', next);
+  iconMoon.style.display = next === 'dark' ? 'block' : 'none';
+  iconSun.style.display = next === 'light' ? 'block' : 'none';
+  // 图标旋转动效
+  themeToggle.classList.remove('spin');
+  void themeToggle.offsetWidth;
+  themeToggle.classList.add('spin');
+  // 光晕脉冲
+  const cg = document.getElementById('cursor-glow');
+  if (cg) { cg.style.opacity = '0.9'; setTimeout(() => { cg.style.opacity = ''; }, 600); }
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open);
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+const toast = document.getElementById('toast');
+document.getElementById('copyPhone').addEventListener('click', () => {
+  const num = resume.phone;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(num).then(() => {
+      toast.textContent = '✓ 电话已复制到剪贴板';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = num;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); toast.textContent = '✓ 电话已复制到剪贴板'; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2000); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+});
+
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => backTop.classList.toggle('show', window.scrollY > 400), { passive: true });
+backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+function initTabs(container) {
+  const tabBtns = container.querySelectorAll('.tab-btn');
+  const panels = container.querySelectorAll('.tab-panel');
+  tabBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => switchTab(tabBtns, panels, idx));
+    btn.addEventListener('keydown', (e) => {
+      let newIdx = idx;
+      if (e.key === 'ArrowRight') newIdx = (idx + 1) % tabBtns.length;
+      else if (e.key === 'ArrowLeft') newIdx = (idx - 1 + tabBtns.length) % tabBtns.length;
+      else if (e.key === 'Home') newIdx = 0;
+      else if (e.key === 'End') newIdx = tabBtns.length - 1;
+      else return;
+      e.preventDefault();
+      switchTab(tabBtns, panels, newIdx);
+      tabBtns[newIdx].focus();
+    });
+  });
+}
+function switchTab(btns, panels, idx) {
+  btns.forEach((b, i) => { b.setAttribute('aria-selected', i === idx); b.setAttribute('tabindex', i === idx ? 0 : -1); });
+  panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+}
+document.querySelectorAll('section').forEach(s => { if (s.querySelector('.tabs')) initTabs(s); });
+
+function animatePct(el, target, dur) {
+  const t0 = performance.now();
+  const step = (t) => {
+    const pr = Math.min(1, (t - t0) / dur);
+    const eased = 1 - Math.pow(1 - pr, 3);
+    el.textContent = Math.round(eased * target) + '%';
+    if (pr < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // 技能进度条 + 数字滚动
+      e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.level + '%';
+        const pct = bar.closest('.skill-bar') && bar.closest('.skill-bar').querySelector('.skill-pct');
+        if (pct) animatePct(pct, +bar.dataset.level, 900);
+      });
+      // 卡片交错渐入
+      e.target.querySelectorAll('.floating-card, .skill-group, .edu-card, .hobby-card').forEach((c, i) => {
+        c.style.animationDelay = (i * 70) + 'ms';
+      });
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ========== 鼠标跟随光晕 ==========
+const glow = document.createElement('div');
+glow.id = 'cursor-glow';
+document.body.appendChild(glow);
+let gx = innerWidth / 2, gy = innerHeight / 3, tgx = gx, tgy = gy;
+document.addEventListener('mousemove', (e) => { tgx = e.clientX; tgy = e.clientY; }, { passive: true });
+(function glowLoop() {
+  gx += (tgx - gx) * 0.12; gy += (tgy - gy) * 0.12;
+  glow.style.transform = 'translate(' + gx + 'px,' + gy + 'px) translate(-50%,-50%)';
+  requestAnimationFrame(glowLoop);
+})();
+
+// ========== 星尘粒子（鼠标滑过交互元素） ==========
+let lastDust = 0;
+const DUST_COLORS = ['#fcd34d', '#5a8dff', '#a78bfa', '#f472b6'];
+document.addEventListener('mousemove', (e) => {
+  const now = performance.now();
+  if (now - lastDust < 60) return;
+  if (!e.target || !e.target.closest) return;
+  if (!e.target.closest('button, a, .floating-card, .dragon-card, .cert-card, .tab-btn, .skill-tag')) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  lastDust = now;
+  const d = document.createElement('i');
+  d.className = 'stardust';
+  const s = 2 + Math.random() * 3.5;
+  d.style.cssText = 'left:' + e.clientX + 'px;top:' + e.clientY + 'px;width:' + s + 'px;height:' + s + 'px;'
+    + 'background:' + DUST_COLORS[Math.floor(Math.random() * DUST_COLORS.length)]
+    + ';animation-duration:' + (0.5 + Math.random() * 0.5) + 's;animation-delay:' + (Math.random() * 0.08) + 's';
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 1300);
+}, { passive: true });
+
+// ========== 卡片 3D 倾斜（跟随鼠标） ==========
+if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+  document.addEventListener('mousemove', (e) => {
+    const card = e.target && e.target.closest ? e.target.closest('.floating-card, .dragon-card') : null;
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    if (r.width === 0) return;
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    card.style.setProperty('--ry', (px * 7).toFixed(2) + 'deg');
+    card.style.setProperty('--rx', (-py * 7).toFixed(2) + 'deg');
+  }, { passive: true });
+  document.addEventListener('mouseout', (e) => {
+    const card = e.target && e.target.closest ? e.target.closest('.floating-card, .dragon-card') : null;
+    if (card && !(e.relatedTarget && card.contains(e.relatedTarget))) {
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+    }
+  }, { passive: true });
+}
+
+// ========== 顶部阅读进度条 ==========
+const prog = document.createElement('div');
+prog.id = 'scroll-progress';
+document.body.appendChild(prog);
+let progRaf = false;
+window.addEventListener('scroll', () => {
+  if (progRaf) return;
+  progRaf = true;
+  requestAnimationFrame(() => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    progRaf = false;
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

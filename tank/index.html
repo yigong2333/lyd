@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>LYD的坦克大战</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<a href="/" style="position:fixed;top:10px;left:10px;z-index:9999;background:rgba(10,6,18,.75);border:1px solid rgba(90,141,255,.4);color:#9fd8ff;padding:5px 12px;border-radius:8px;font-size:12px;text-decoration:none;backdrop-filter:blur(8px);font-family:system-ui,sans-serif;">← 返回主页</a>
+
+<!-- 游戏容器 -->
+<div id="game-container">
+  <!-- Canvas层 -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD层（游戏内UI） -->
+  <div id="hud" class="hidden">
+    <!-- 顶部信息栏 -->
+    <div id="hud-top">
+      <div class="hud-left">
+        <div class="hud-box">
+          <span class="label">SCORE</span>
+          <span id="score-value">000000</span>
+        </div>
+        <div class="hud-box best">
+          <span class="label">BEST</span>
+          <span id="best-value">000000</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-box">
+          <span class="label">LIVES</span>
+          <span id="lives-value">♥♥♥</span>
+        </div>
+        <div class="hud-box">
+          <span class="label">ENEMY</span>
+          <span id="enemy-count">0</span>
+        </div>
+        <div id="combo-display" class="hud-box combo hidden">
+          <span class="label">COMBO</span>
+          <span id="combo-value">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部波次进度 -->
+    <div id="hud-bottom">
+      <div id="wave-label">WAVE 1/3</div>
+      <div class="wave-track">
+        <div id="wave-bar"></div>
+      </div>
+    </div>
+
+    <!-- 浮动文字层 -->
+    <div id="float-layer"></div>
+
+    <!-- 波次提示 -->
+    <div id="wave-text"></div>
+  </div>
+
+  <!-- ========== 主菜单 ========== -->
+  <div id="main-menu" class="overlay">
+    <div class="menu-panel">
+      <h1 class="game-title">LYD的坦克大战</h1>
+      <p class="game-subtitle">TANK BATTLE · 校园霓虹</p>
+      <div class="menu-buttons">
+        <button class="cyber-btn" data-action="campaign"><span class="btn-icon">▶</span> 开始战役</button>
+        <button class="cyber-btn" data-action="continue"><span class="btn-icon">↻</span> 继续战斗</button>
+        <button class="cyber-btn" data-action="endless"><span class="btn-icon">∞</span> 无尽生存</button>
+        <button class="cyber-btn" data-action="hangar"><span class="btn-icon">⚙</span> 坦克机库</button>
+        <button class="cyber-btn" data-action="ranking"><span class="btn-icon">★</span> 排行榜</button>
+      </div>
+      <div class="menu-footer">
+        <span class="label">BEST</span>
+        <span id="menu-best">000000</span>
+      </div>
+      <div class="menu-tip">WASD移动 · 空格射击 · K技能 · ESC暂停</div>
+    </div>
+  </div>
+
+  <!-- ========== 坦克机库 ========== -->
+  <div id="hangar-menu" class="overlay hidden">
+    <div class="menu-panel hangar">
+      <h2 class="panel-title">🛡 坦克选择</h2>
+      <div class="tank-display">
+        <div id="tank-preview">
+          <div class="tank-icon">▲</div>
+        </div>
+        <div class="tank-info">
+          <h3 id="tank-name">学霸号</h3>
+          <p id="tank-desc">蓝色·知识 — 蓄力炮</p>
+          <div class="tank-stats">
+            <div class="stat"><span class="stat-label">生命</span><span id="tank-hp" class="stat-val">❤❤❤</span></div>
+            <div class="stat"><span class="stat-label">速度</span><span id="tank-speed" class="stat-val">★★</span></div>
+            <div class="stat"><span class="stat-label">射速</span><span id="tank-fire" class="stat-val">★★</span></div>
+            <div class="stat"><span class="stat-label">技能</span><span id="tank-skill" class="stat-val">charge</span></div>
+          </div>
+          <div id="tank-index" class="tank-index">1/3</div>
+        </div>
+      </div>
+      <div class="hangar-nav">
+        <button class="cyber-btn small" data-action="tank-prev">◀</button>
+        <button class="cyber-btn" data-action="tank-confirm">确认选择</button>
+        <button class="cyber-btn small" data-action="tank-next">▶</button>
+      </div>
+      <button class="cyber-btn ghost" data-action="back">◀ 返回</button>
+    </div>
+  </div>
+
+  <!-- ========== 暂停菜单 ========== -->
+  <div id="pause-menu" class="overlay hidden">
+    <div class="menu-panel">
+      <h2 class="panel-title">⏸ 暂停</h2>
+      <div class="menu-buttons">
+        <button class="cyber-btn" data-action="resume"><span class="btn-icon">▶</span> 继续</button>
+        <button class="cyber-btn" data-action="restart"><span class="btn-icon">↻</span> 重新开始</button>
+        <button class="cyber-btn" data-action="quit"><span class="btn-icon">⌂</span> 返回主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 结算界面 ========== -->
+  <div id="result-screen" class="overlay hidden">
+    <div class="menu-panel result">
+      <h2 id="result-title" class="panel-title">✦ 胜利 ✦</h2>
+      <div class="result-rank">
+        <span class="rank-label">评级</span>
+        <span id="result-rank" class="rank-letter">S</span>
+      </div>
+      <div class="result-stats">
+        <div class="result-row"><span>得分</span><span id="r-score">000000</span></div>
+        <div class="result-row"><span>击杀</span><span id="r-kills">0</span></div>
+        <div class="result-row"><span>用时</span><span id="r-time">00:00</span></div>
+        <div class="result-row"><span>最高连击</span><span id="r-combo">0</span></div>
+        <div class="result-row gold"><span>奖励</span><span id="r-gold">+0</span></div>
+      </div>
+      <div class="menu-buttons">
+        <button class="cyber-btn" data-action="next-level"><span class="btn-icon">▶</span> 下一关</button>
+        <button class="cyber-btn" data-action="restart"><span class="btn-icon">↻</span> 重玩</button>
+        <button class="cyber-btn" data-action="quit"><span class="btn-icon">⌂</span> 主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 排行榜 ========== -->
+  <div id="ranking-screen" class="overlay hidden">
+    <div class="menu-panel">
+      <h2 class="panel-title">🏆 排行榜</h2>
+      <ul id="ranking-list" class="ranking-list"></ul>
+      <button class="cyber-btn ghost" data-action="back">◀ 返回</button>
+    </div>
+  </div>
+
+  <!-- ========== 移动端控制 ========== -->
+  <div id="mobile-controls" class="hidden">
+    <div id="joystick">
+      <div id="joystick-knob"></div>
+    </div>
+    <div class="mobile-buttons">
+      <button id="btn-skill" class="mobile-btn skill">K</button>
+      <button id="btn-fire" class="mobile-btn fire">射击</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
