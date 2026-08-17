@@ -1367,6 +1367,21 @@ footer::before {
   .song-head { text-align: left; }
 }
 
+
+/* ===== 歌单 ===== */
+.song-list { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+.song-item {
+  display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px;
+  border: 1px solid rgba(167,139,250,.22); border-radius: 24px;
+  background: rgba(30,28,62,.6); cursor: pointer; transition: all .2s;
+  max-width: 200px;
+}
+.song-item img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex: none; }
+.song-item .n { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+.song-item .a { font-size: 10px; color: #938fb0; }
+.song-item.active { border-color: rgba(90,141,255,.6); background: rgba(90,141,255,.15); box-shadow: 0 0 14px rgba(90,141,255,.25); }
+.song-item:active { transform: scale(.96); }
+
 </style>
 </head>
 <body>
@@ -1509,7 +1524,7 @@ const resume = {
         },
         {
           name: 'AI音乐/音频创作',
-          desc: '利用AI工具进行音乐与音频创作，代表作品《轻拿轻放》（海绵音乐制作），将创意快速转化为可听化成果。',
+          desc: '利用AI工具进行音乐与音频创作，代表作品《千秋大梦》《轻拿轻放》（海绵音乐制作），将创意快速转化为可听化成果。',
           tech: ['海绵音乐', 'AI音频工具', '创意设计'],
           result: '快速产出个性化音频内容',
           iconKey: 'music',
@@ -2187,12 +2202,16 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 
-// ========== 音乐播放系统（听歌覆盖层 + 悬浮窗 + 状态同步） ==========
+
+// ========== 音乐播放系统（双歌曲单 + 悬浮窗 + 状态同步） ==========
 (function () {
-  var LS_KEY = 'lydPlayer';
-  var SONG_URL = 'song/song.m4a';
+  var LS_KEY = '***';
   var DURATION = 203;
-  var LYRICS_HTML = '<div class="lyric-section tag-intro"><span class="lyric-tag">前奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>你说这周搬家 问我有没有空</p><p>反正我有车</p><p>你说得理直气壮</p><p>我说好啊</p><p>好得不太像帮忙</p><p>倒像是终于</p><p>等到了什么一样</p><p>[pre-chorus]</p><p>你封箱熟练</p><p>胶带都撕得狂妄</p><p>回头叮嘱我 这几箱轻点</p><p>易碎朝上</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你对纸箱 都比对我善良</p><p>轻拿 轻放</p><p>装得下的归你 装不下的我扛</p></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>你用马克笔</p><p>给每个箱子起名字</p><p>厨房 冬装</p><p>字迹还是那么漂亮</p><p>只有一箱写杂物</p><p>你说这箱随便放</p><p>可里面每一样</p><p>订单都还在我手机上</p><p>[pre-chorus]</p><p>到你新家楼下</p><p>有人小跑来帮忙</p><p>我低下头去</p><p>假装还在研究导航</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你对纸箱 都比对我善良</p><p>轻拿 轻放</p><p>装得下的归你 装不下的我扛</p></div></div>\n<div class="lyric-section tag-interlude"><span class="lyric-tag">间奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-bridge"><span class="lyric-tag">桥段</span><div class="lyric-lines"><p>最后你清点完 说差不多了</p><p>那箱杂物别搬了</p><p>新家放不下</p><p>我说好 正顺路 我拿去扔了</p><p>垃圾站三公里 我开了一晚上</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你不要的那箱</p><p>我捡得理直气壮</p><p>轻拿 轻放</p><p>这四个字 这一次</p><p>我写在箱上</p></div></div>\n<div class="lyric-section tag-outro"><span class="lyric-tag">尾奏</span><div class="lyric-lines"><p>后备箱的东西终于有了存放</p><p>而我从此只能流浪</p></div></div>';
+  var SONGS = [
+    { id: 'qianqiu', title: '千秋大梦', author: '亦廾', cover: 'song/cover2.jpg', audio: 'song/song2.m4a', dur: 173, lyrics: '<div class="lyric-section tag-intro"><span class="lyric-tag">前奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>风起洛阳城</p><p>花落满长街</p><p>谁在灯火阑珊处回眸一瞥</p><p>提笔写春秋</p><p>墨色染岁月</p><p>故事里藏着你我的誓约</p><p>曾踏遍山河万里烟霞</p><p>看尽人间繁华与风沙</p><p>雪落长安道</p><p>月照旧时家</p><p>你眉间朱砂灼灼如画</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>这一场千秋大梦谁与共</p><p>愿化作长风万里送孤鸿</p><p>若今生不能与你相拥</p><p>就让思念随月光入梦</p></div></div>\n<div class="lyric-section tag-interlude"><span class="lyric-tag">间奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>又见那年桃花开满坡</p><p>你执伞走过青石巷陌</p><p>烟雨朦胧处你回眸一笑</p><p>便胜过人间景色无数</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>这一场千秋大梦谁与共</p><p>愿化作长风万里送孤鸿</p><p>若来世还能与你相逢</p><p>我愿化作青山守候你影踪</p></div></div>\n<div class="lyric-section tag-outro"><span class="lyric-tag">尾奏</span><div class="lyric-lines"><p>梦里不知身是客</p><p>一晌贪欢终成空</p><p>唯有那轮明月依旧</p><p>照着你我 千年的梦</p></div></div>' },
+    { id: 'qingna', title: '轻拿轻放', author: '亦廾', cover: 'song/cover.jpg', audio: 'song/song.m4a', dur: 203, lyrics: '<div class="lyric-section tag-intro"><span class="lyric-tag">前奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>你说这周搬家 问我有没有空</p><p>反正我有车</p><p>你说得理直气壮</p><p>我说好啊</p><p>好得不太像帮忙</p><p>倒像是终于</p><p>等到了什么一样</p><p>[pre-chorus]</p><p>你封箱熟练</p><p>胶带都撕得狂妄</p><p>回头叮嘱我 这几箱轻点</p><p>易碎朝上</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你对纸箱 都比对我善良</p><p>轻拿 轻放</p><p>装得下的归你 装不下的我扛</p></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>你用马克笔</p><p>给每个箱子起名字</p><p>厨房 冬装</p><p>字迹还是那么漂亮</p><p>只有一箱写杂物</p><p>你说这箱随便放</p><p>可里面每一样</p><p>订单都还在我手机上</p><p>[pre-chorus]</p><p>到你新家楼下</p><p>有人小跑来帮忙</p><p>我低下头去</p><p>假装还在研究导航</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你对纸箱 都比对我善良</p><p>轻拿 轻放</p><p>装得下的归你 装不下的我扛</p></div></div>\n<div class="lyric-section tag-interlude"><span class="lyric-tag">间奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-bridge"><span class="lyric-tag">桥段</span><div class="lyric-lines"><p>最后你清点完 说差不多了</p><p>那箱杂物别搬了</p><p>新家放不下</p><p>我说好 正顺路 我拿去扔了</p><p>垃圾站三公里 我开了一晚上</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你不要的那箱</p><p>我捡得理直气壮</p><p>轻拿 轻放</p><p>这四个字 这一次</p><p>我写在箱上</p></div></div>\n<div class="lyric-section tag-outro"><span class="lyric-tag">尾奏</span><div class="lyric-lines"><p>后备箱的东西终于有了存放</p><p>而我从此只能流浪</p></div></div>' },
+  ];
+  var curSong = SONGS[0];
 
   function readState() {
     try { return JSON.parse(localStorage.getItem(LS_KEY)) || null; } catch (e) { return null; }
@@ -2200,7 +2219,7 @@ window.addEventListener('scroll', () => {
   function writeState() {
     try {
       localStorage.setItem(LS_KEY, JSON.stringify({
-        playing: !audio.paused, t: audio.currentTime, ts: Date.now(), v: 1
+        playing: !audio.paused, t: audio.currentTime, ts: Date.now(), songId: curSong.id, v: 1
       }));
     } catch (e) {}
   }
@@ -2209,15 +2228,14 @@ window.addEventListener('scroll', () => {
     return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
   }
 
-  // --- audio 单例（提前缓冲：打开听歌层即开始加载） ---
-  var audio = new Audio(SONG_URL);
+  var audio = new Audio(SONGS[0].audio);
   audio.preload = 'auto';
 
   // --- 悬浮窗 ---
   var wrap = document.createElement('div');
   wrap.className = 'mini-player';
-  wrap.innerHTML = '<img src="song/cover.jpg" alt="轻拿轻放封面">'
-    + '<div class="mini-info"><div class="mini-title">轻拿轻放</div>'
+  wrap.innerHTML = '<img src="song/cover2.jpg" alt="千秋大梦封面" id="miniCover">'
+    + '<div class="mini-info"><div class="mini-title" id="miniTitle">千秋大梦</div>'
     + '<div class="mini-sub">亦廾 · 海绵音乐</div></div>'
     + '<button class="mini-btn" id="miniPlayBtn" aria-label="播放/暂停">▶</button>'
     + '<button class="mini-close" id="miniClose" aria-label="关闭">×</button>';
@@ -2225,16 +2243,20 @@ window.addEventListener('scroll', () => {
   var miniPlayBtn = wrap.querySelector('#miniPlayBtn');
   var miniClose = wrap.querySelector('#miniClose');
 
+  function refreshMini() {
+    wrap.querySelector('#miniCover').src = curSong.cover;
+    wrap.querySelector('#miniTitle').textContent = curSong.title;
+    miniPlayBtn.textContent = audio.paused ? '▶' : '❚❚';
+  }
   function showMini() {
     wrap.classList.add('show');
-    miniPlayBtn.textContent = audio.paused ? '▶' : '❚❚';
+    refreshMini();
   }
   miniPlayBtn.addEventListener('click', function (e) {
     e.stopPropagation();
     if (audio.paused) { audio.play().catch(function () {}); }
     else { audio.pause(); }
-    miniPlayBtn.textContent = audio.paused ? '▶' : '❚❚';
-    writeState();
+    refreshMini(); writeState();
   });
   miniClose.addEventListener('click', function (e) {
     e.stopPropagation();
@@ -2258,22 +2280,23 @@ window.addEventListener('scroll', () => {
       '<button class="song-close" id="songClose" aria-label="关闭">×</button>'
       + '<div class="song-content">'
       + '<div class="song-head">'
-      + '<div class="cover-box"><img src="song/cover.jpg" alt="轻拿轻放封面"></div>'
-      + '<h2>轻拿轻放</h2><div class="sub">亦廾 · 海绵音乐 AI 创作</div>'
+      + '<div class="song-list" id="songList"></div>'
+      + '<div class="cover-box"><img src="song/cover2.jpg" alt="歌曲封面" id="songCover"></div>'
+      + '<h2 id="songTitle">千秋大梦</h2><div class="sub" id="songSub">亦廾 · 海绵音乐 AI 创作</div>'
       + '</div>'
       + '<div class="song-player">'
       + '<div class="row">'
       + '<button class="song-play" id="songPlayBtn" aria-label="播放">▶</button>'
-      + '<div class="info"><div class="t1">轻拿轻放</div><div class="t2" id="songState">点击播放键开始收听</div></div>'
+      + '<div class="info"><div class="t1" id="songPTitle">千秋大梦</div><div class="t2" id="songState">点击播放键开始收听</div></div>'
       + '</div>'
       + '<div class="song-progress-row">'
       + '<span class="t" id="songCur">0:00</span>'
-      + '<input type="range" class="song-progress" id="songProgress" min="0" max="203" step="0.1" value="0">'
-      + '<span class="t" id="songDur">3:23</span>'
+      + '<input type="range" class="song-progress" id="songProgress" min="0" max="173" step="0.1" value="0">'
+      + '<span class="t" id="songDur">2:53</span>'
       + '</div>'
       + '</div>'
-      + '<div class="song-lyrics"><div class="t">— 歌 词 —</div>' + LYRICS_HTML + '</div>'
-      + '<div class="song-footer">《轻拿轻放》· 用 <a href="https://www.haimian.com" target="_blank" rel="noopener">海绵音乐</a> 创作 · <a href="song/" target="_blank" rel="noopener">独立页面</a></div>'
+      + '<div class="song-lyrics"><div class="t">— 歌 词 —</div><div id="songLyrics">' + SONGS[0].lyrics + '</div></div>'
+      + '<div class="song-footer">《千秋大梦》《轻拿轻放》· 用 <a href="https://www.haimian.com" target="_blank" rel="noopener">海绵音乐</a> 创作 · <a href="song/" target="_blank" rel="noopener">独立页面</a></div>'
       + '</div>';
     document.body.appendChild(layer);
 
@@ -2282,7 +2305,45 @@ window.addEventListener('scroll', () => {
     var curEl = layer.querySelector('#songCur');
     var stateEl = layer.querySelector('#songState');
     var closeBtn = layer.querySelector('#songClose');
+    var songList = layer.querySelector('#songList');
 
+    // 歌单渲染
+    function renderSongList() {
+      var html = '';
+      for (var i = 0; i < SONGS.length; i++) {
+        var s = SONGS[i];
+        html += '<div class="song-item' + (s.id === curSong.id ? ' active' : '') + '" data-song="' + s.id + '">'
+          + '<img src="' + s.cover + '" alt="' + s.title + '">'
+          + '<div class="song-item-info"><div class="n">' + s.title + '</div><div class="a">亦廾</div></div>'
+          + '</div>';
+      }
+      songList.innerHTML = html;
+      var items = songList.querySelectorAll('.song-item');
+      for (var j = 0; j < items.length; j++) {
+        items[j].addEventListener('click', function (e) {
+          var id = this.getAttribute('data-song');
+          switchSong(id);
+          if (audio.paused) { audio.play().catch(function () {}); }
+          refreshPlayBtn(); writeState();
+        });
+      }
+    }
+    function switchSong(id) {
+      for (var i = 0; i < SONGS.length; i++) {
+        if (SONGS[i].id === id) { curSong = SONGS[i]; break; }
+      }
+      audio.src = curSong.audio;
+      audio.load();
+      layer.querySelector('#songCover').src = curSong.cover;
+      layer.querySelector('#songTitle').textContent = curSong.title;
+      layer.querySelector('#songPTitle').textContent = curSong.title;
+      layer.querySelector('#songLyrics').innerHTML = curSong.lyrics;
+      progress.max = curSong.dur;
+      layer.querySelector('#songDur').textContent = fmt(curSong.dur);
+      curEl.textContent = '0:00';
+      progress.value = 0;
+      renderSongList();
+    }
     function refreshPlayBtn() {
       playBtn.textContent = audio.paused ? '▶' : '❚❚';
       stateEl.textContent = audio.paused ? '点击播放键开始收听' : '正在播放 · 关闭此页音乐会继续';
@@ -2301,21 +2362,17 @@ window.addEventListener('scroll', () => {
       curEl.textContent = fmt(audio.currentTime);
       progress.value = audio.currentTime;
     });
-    audio.addEventListener('loadedmetadata', function () {
-      progress.max = audio.duration || DURATION;
-      layer.querySelector('#songDur').textContent = fmt(audio.duration || DURATION);
-    });
     progress.addEventListener('input', function () { curEl.textContent = fmt(+progress.value); });
     progress.addEventListener('change', function () {
       audio.currentTime = +progress.value;
       writeState();
     });
+    renderSongList();
   }
   function openLayer() {
     buildLayer();
     layer.classList.add('show');
     document.body.style.overflow = 'hidden';
-    // 打开即缓冲（audio.preload=auto 已生效），若此前在播放则按钮保持播放态
     var playBtn = layer.querySelector('#songPlayBtn');
     playBtn.textContent = audio.paused ? '▶' : '❚❚';
     wrap.classList.remove('show');
@@ -2326,7 +2383,7 @@ window.addEventListener('scroll', () => {
     if (!audio.paused) showMini();
   }
 
-  // --- 简历项目卡"立即听歌"按钮 → 打开覆盖层（不跳页，播放不断） ---
+  // --- 简历项目卡"立即听歌"按钮 → 打开覆盖层 ---
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href="song/"]') : null;
     if (a) {
@@ -2339,14 +2396,18 @@ window.addEventListener('scroll', () => {
   setInterval(function () { if (!audio.paused) writeState(); }, 3000);
   window.addEventListener('pagehide', writeState);
 
-  // --- 进入页面：续播恢复 ---
+  // --- 进入页面：续播恢复（按歌曲） ---
   var st = readState();
   if (st && st.playing && st.v === 1 && (Date.now() - st.ts) < 90000) {
-    audio.currentTime = Math.min(st.t + (Date.now() - st.ts) / 1000, DURATION);
+    for (var k = 0; k < SONGS.length; k++) {
+      if (SONGS[k].id === st.songId) { curSong = SONGS[k]; break; }
+    }
+    audio.src = curSong.audio;
+    audio.load();
+    audio.currentTime = Math.min(st.t + (Date.now() - st.ts) / 1000, curSong.dur);
     audio.play().then(function () {
       showMini();
     }).catch(function () {
-      // 移动端无手势限制：显示悬浮窗，点击即可继续
       showMini();
     });
   }
