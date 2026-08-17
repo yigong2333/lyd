@@ -1388,10 +1388,12 @@ const resume = {
         },
         {
           name: 'AI音乐/音频创作',
-          desc: '利用AI工具进行音乐与音频创作，将创意快速转化为可听化成果。',
-          tech: ['AI音频工具', '创意设计'],
+          desc: '利用AI工具进行音乐与音频创作，代表作品《轻拿轻放》（海绵音乐制作），将创意快速转化为可听化成果。',
+          tech: ['海绵音乐', 'AI音频工具', '创意设计'],
           result: '快速产出个性化音频内容',
           iconKey: 'music',
+          link: 'https://www.haimian.com/share/W0VRye9rpr',
+          linkText: '试听',
         },
         {
           name: 'AI辅助PPT制作',
@@ -1693,7 +1695,7 @@ function renderProjects() {
           <div class="project-desc">${p.desc}</div>
           <div class="project-tech">${p.tech.map(t => `<span class="tech-badge">${t}</span>`).join('')}</div>
           <div class="project-result">▸ ${p.result}</div>
-          ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="btn btn-outline project-link">${icons.game}<span>试玩</span></a>` : ''}
+          ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="btn btn-outline project-link">${icons[p.iconKey] || icons.game}<span>${p.linkText || '试玩'}</span></a>` : ''}
         </div>`;
     });
     panelsHTML += '</div></div>';
