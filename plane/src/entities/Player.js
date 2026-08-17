@@ -71,11 +71,11 @@ export class Player extends Entity {
     // 指针/触屏 移动（跟随）
     if (input.pointer.down) {
       if (input.dragEnabled) {
-        // 移动端滑动模式：手指滑多远飞机走多远（灵敏度 1.15，无遮挡问题）
+        // 移动端相对位移滑动：手指往哪滑，飞机就往哪移动相同距离（1:1）
+        // 飞机不贴手指，保持手指下方偏移，完全可见
         const d = input.getPointerDelta();
-        const sens = 1.15;
-        this.x = this.x + d.dx * sens;
-        this.y = this.y + d.dy * sens;
+        this.x = this.x + d.dx;
+        this.y = this.y + d.dy;
       } else if (input.isDown('')) {
         // PC 鼠标按住吸附模式
         const targetX = input.pointer.x;
