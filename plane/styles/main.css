@@ -724,3 +724,5 @@ html, body {
   #hud-resources { min-width: 150px; top: 70px; }
   #hp-text { display: none; }
 }
+
+.v-btn.charge-btn { background: rgba(255,242,0,.15); border-color: rgba(255,242,0,.5); color: #fff200; }

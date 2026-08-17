@@ -100,7 +100,8 @@ export class Player extends Entity {
 
     // 射击
     const autoShoot = game.canAutoShoot();
-    const charging = input.pointer.down && (this._isStaticCharge(input) || this._pcCharge(input));
+    // 移动端蓄力：按住 CHG 虚拟按钮蓄力，松开释放；滑动只管移动
+    const charging = input.dragEnabled ? input.vButtons.charge : (input.pointer.down && this._pcCharge(input));
     if (charging) {
       this.chargeTime = clamp(this.chargeTime + dt, 0, this.data.charge.time);
       if (this.chargeTime >= this.data.charge.time) this.isCharged = true;

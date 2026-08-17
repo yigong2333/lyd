@@ -95,18 +95,23 @@ export class AudioManager {
 
   // ============ 具体音效 ============
   sfxShoot(power = 1) {
-    this._tone({ f0: 1400 + power * 80, f1: 900, d: 0.035, type: 'square', vol: 0.12, dist: 4 });
+    // 柔和激光感：正弦扫频下行 + 轻短促
+    this._tone({ f0: 1500 + power * 60, f1: 520, d: 0.055, type: 'sine', vol: 0.085, dist: 4 });
+    this._tone({ f0: 2400 + power * 60, f1: 1400, d: 0.03, type: 'sine', vol: 0.04, dist: 4 });
   }
   sfxChargedShoot() {
-    this._tone({ f0: 120, f1: 900, d: 0.22, type: 'sawtooth', vol: 0.25, dist: 8 });
-    this._tone({ f0: 600, f1: 1600, d: 0.18, type: 'square', vol: 0.18 });
+    // 蓄力重炮：低频轰 + 上扬能量
+    this._tone({ f0: 90, f1: 320, d: 0.3, type: 'sine', vol: 0.28, dist: 8 });
+    this._tone({ f0: 500, f1: 1800, d: 0.22, type: 'triangle', vol: 0.16 });
+    this._noise({ d: 0.25, vol: 0.14, filterFreq: 900 });
   }
   sfxHit() {
-    this._tone({ f0: 300, f1: 100, d: 0.05, type: 'square', vol: 0.18, dist: 6 });
+    this._tone({ f0: 260, f1: 90, d: 0.06, type: 'triangle', vol: 0.16, dist: 5 });
   }
   sfxEnemyDieSmall() {
-    this._noise({ d: 0.12, vol: 0.18, filterFreq: 1400 });
-    this._tone({ f0: 500, f1: 120, d: 0.08, type: 'triangle', vol: 0.12 });
+    // 小敌机击毁：闷响 + 碎音
+    this._noise({ d: 0.14, vol: 0.16, filterFreq: 900 });
+    this._tone({ f0: 420, f1: 90, d: 0.12, type: 'sine', vol: 0.13, dist: 6 });
   }
   sfxEnemyDieBig() {
     this._noise({ d: 0.5, vol: 0.35, filterFreq: 700 });
@@ -176,13 +181,13 @@ export class AudioManager {
     this.stopBGM();
 
     const patterns = {
-      menu:    { tempo: 90,  bass: [110, 110, 146, 123], lead: [330, 392, 440, 523] },
-      stage1:  { tempo: 130, bass: [82, 82, 98, 98, 110, 110, 98, 82], lead: [330, 440, 523, 392, 494, 587, 523, 440] },
-      stage2:  { tempo: 150, bass: [73, 73, 92, 73, 82, 82, 103, 82], lead: [293, 392, 466, 523, 494, 587, 659, 523] },
-      stage3:  { tempo: 168, bass: [65, 65, 82, 73, 65, 65, 98, 82], lead: [261, 349, 415, 466, 523, 466, 415, 349] },
-      boss:    { tempo: 175, bass: [55, 65, 55, 73, 55, 65, 82, 73], lead: [220, 330, 261, 392, 440, 392, 330, 440] },
-      victory: { tempo: 110, bass: [110, 130, 146, 165, 175, 196, 220, 247], lead: [440, 494, 523, 587, 659, 698, 784, 880] },
-      lose:    { tempo: 70,  bass: [146, 130, 110, 98],       lead: [220, 196, 174, 146] },
+      menu:    { tempo: 80,  bass: [110, 110, 146, 123], lead: [330, 392, 440, 523] },
+      stage1:  { tempo: 104, bass: [82, 82, 98, 98, 110, 110, 98, 82], lead: [330, 440, 523, 392, 494, 587, 523, 440] },
+      stage2:  { tempo: 114, bass: [73, 73, 92, 73, 82, 82, 103, 82], lead: [293, 392, 466, 523, 494, 587, 659, 523] },
+      stage3:  { tempo: 124, bass: [65, 65, 82, 73, 65, 65, 98, 82], lead: [261, 349, 415, 466, 523, 466, 415, 349] },
+      boss:    { tempo: 138, bass: [55, 65, 55, 73, 55, 65, 82, 73], lead: [220, 330, 261, 392, 440, 392, 330, 440] },
+      victory: { tempo: 100, bass: [110, 130, 146, 165, 175, 196, 220, 247], lead: [440, 494, 523, 587, 659, 698, 784, 880] },
+      lose:    { tempo: 66,  bass: [146, 130, 110, 98],       lead: [220, 196, 174, 146] },
     };
     const P = patterns[pattern] || patterns.stage1;
     const beatMs = 60000 / P.tempo;
@@ -192,12 +197,17 @@ export class AudioManager {
       if (!this.enabled || !this.initialized) return;
       const bass = P.bass[step % P.bass.length];
       const lead = P.lead[step % P.lead.length];
-      // Bass
-      this._bgmTone(bass, beatMs * 0.9, 'sawtooth', 0.35);
-      // Lead 每拍上
-      if (step % 2 === 0) this._bgmTone(lead, beatMs * 0.4, 'square', 0.16);
-      // Hi-hat-like (噪声脉冲)
-      if (step % 1 === 0) this._bgmNoise(beatMs * 0.05, 0.04, 6000);
+      // 低频垫底（温暖 sine 长音，每 2 小节一次）
+      if (step % 8 === 0) this._bgmTone(bass / 2, beatMs * 3.2, 'sine', 0.16);
+      // Bass：柔和 sine 短促底
+      this._bgmTone(bass, beatMs * 0.85, 'sine', 0.22);
+      // 旋律：triangle 柔和 + 三度和声（每 2 拍），音量克制
+      if (step % 2 === 0) {
+        this._bgmTone(lead, beatMs * 0.5, 'triangle', 0.07);
+        this._bgmTone(lead * 1.26, beatMs * 0.5, 'triangle', 0.035);
+      }
+      // 极轻的节奏点（sine 短音代替噪声 hi-hat，不再有"信号故障"感）
+      if (step % 2 === 1) this._bgmTone(1800, beatMs * 0.04, 'sine', 0.02);
       step++;
     };
     tick();

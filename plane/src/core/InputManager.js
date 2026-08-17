@@ -31,7 +31,7 @@ export class InputManager {
     this.dragOffset = { x: 0, y: 0 }; // 玩家手指与战机中心的偏移
 
     // 虚拟按钮（移动端）
-    this.vButtons = { bomb: false, bombPressed: false, skill: false, skillPressed: false };
+    this.vButtons = { bomb: false, bombPressed: false, skill: false, skillPressed: false, charge: false };
 
     this._bind();
   }
@@ -117,6 +117,7 @@ export class InputManager {
     };
     bindBtn('btn-bomb', 'bomb');
     bindBtn('btn-skill', 'skill');
+    bindBtn('btn-charge', 'charge');
   }
 
   /** 每帧开始调用，清空单帧标记 */
