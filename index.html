@@ -1246,6 +1246,41 @@ footer::before {
 @media (prefers-reduced-motion: reduce) {
   #cursor-glow, .stardust { display: none !important; }
 }
+
+/* ===== 迷你音乐播放器（悬浮窗） ===== */
+.mini-player {
+  position: fixed; right: 16px; bottom: 16px; z-index: 500;
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(20,16,48,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-bright); border-radius: 26px;
+  padding: 8px 14px 8px 8px; max-width: min(320px, calc(100vw - 32px));
+  box-shadow: 0 10px 34px rgba(0,0,0,.55), 0 0 22px rgba(90,141,255,.25);
+  transform: translateY(20px); opacity: 0; pointer-events: none;
+  transition: transform .3s ease, opacity .3s ease;
+}
+.mini-player.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+.mini-player img {
+  width: 44px; height: 44px; border-radius: 18px; object-fit: cover; flex: none;
+  border: 1px solid var(--border);
+}
+.mini-info { flex: 1; min-width: 0; }
+.mini-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-sub { font-size: 11px; color: var(--text-3); }
+.mini-btn {
+  flex: none; width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border-bright); background: rgba(90,141,255,.18);
+  color: #fff; font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.mini-btn:hover { box-shadow: 0 0 14px rgba(90,141,255,.5); }
+.mini-close {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  border: none; background: transparent; color: var(--text-3);
+  font-size: 14px; cursor: pointer; line-height: 1;
+}
+.mini-close:hover { color: #fff; }
+
 </style>
 </head>
 <body>
@@ -2064,6 +2099,74 @@ window.addEventListener('scroll', () => {
     progRaf = false;
   });
 }, { passive: true });
+
+// ========== 迷你音乐播放器（《轻拿轻放》跨页续播） ==========
+(function () {
+  var LS_KEY = 'lydPlayer';
+  var SONG_URL = 'song/song.m4a';
+  var DURATION = 203;
+  function readState() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY)) || null; } catch (e) { return null; }
+  }
+  function writeState() {
+    if (!audio) return;
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        playing: !audio.paused, t: audio.currentTime, ts: Date.now(), v: 1
+      }));
+    } catch (e) {}
+  }
+  // DOM
+  var wrap = document.createElement('div');
+  wrap.className = 'mini-player';
+  wrap.innerHTML = '<img src="song/cover.jpg" alt="轻拿轻放封面">'
+    + '<div class="mini-info"><div class="mini-title">轻拿轻放</div>'
+    + '<div class="mini-sub">亦廾 · 海绵音乐</div></div>'
+    + '<button class="mini-btn" id="miniPlayBtn" aria-label="播放/暂停">▶</button>'
+    + '<button class="mini-close" id="miniClose" aria-label="关闭">×</button>';
+  document.body.appendChild(wrap);
+  var playBtn = wrap.querySelector('#miniPlayBtn');
+  var closeBtn = wrap.querySelector('#miniClose');
+
+  var audio = new Audio(SONG_URL);
+  audio.preload = 'metadata';
+
+  function show(paused) {
+    wrap.classList.add('show');
+    playBtn.textContent = paused ? '▶' : '❚❚';
+  }
+  playBtn.addEventListener('click', function () {
+    if (audio.paused) {
+      audio.play().catch(function () {});
+    } else {
+      audio.pause();
+    }
+    playBtn.textContent = audio.paused ? '▶' : '❚❚';
+    writeState();
+  });
+  closeBtn.addEventListener('click', function () {
+    audio.pause();
+    wrap.classList.remove('show');
+    try { localStorage.removeItem(LS_KEY); } catch (e) {}
+  });
+  wrap.addEventListener('click', function (e) {
+    // 点击悬浮窗主体（非按钮）→ 打开听歌页
+    if (e.target === wrap || e.target.classList.contains('mini-info') || e.target.tagName === 'IMG') {
+      window.location.href = 'song/';
+    }
+  });
+  audio.addEventListener('pause', function () { playBtn.textContent = '▶'; });
+  audio.addEventListener('play', function () { playBtn.textContent = '❚❚'; });
+  setInterval(function () { if (!audio.paused) writeState(); }, 3000);
+  window.addEventListener('pagehide', writeState);
+
+  // 恢复播放：状态"播放中"且 90 秒内 → 续播 + 显示悬浮窗
+  var st = readState();
+  if (st && st.playing && st.v === 1 && (Date.now() - st.ts) < 90000) {
+    audio.currentTime = Math.min(st.t + (Date.now() - st.ts) / 1000, DURATION);
+    audio.play().then(function () { show(false); }).catch(function () { show(true); });
+  }
+})();
 </script>
 </body>
 </html>

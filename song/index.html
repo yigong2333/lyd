@@ -32,7 +32,7 @@
     transition: all .2s;
   }
   .back:hover { color: var(--ender); border-color: var(--ender); }
-  header { text-align: center; padding: 18px 10px 26px; }
+  header { text-align: center; padding: 18px 10px 22px; }
   .cover-box { position: relative; max-width: 520px; margin: 0 auto 18px; }
   .cover-box img {
     display: block; width: 100%; height: auto; border-radius: 18px;
@@ -45,20 +45,44 @@
     display: inline-block; padding: 2px 10px; border-radius: 14px;
     border: 1px solid var(--border); margin: 2px 3px;
   }
+  /* ===== 播放器 ===== */
   .player-card {
     background: var(--card); border: 1px solid var(--border); border-radius: 18px;
-    overflow: hidden; margin-bottom: 22px; box-shadow: 0 8px 30px rgba(0,0,0,.35);
+    padding: 18px 18px 16px; margin-bottom: 22px; box-shadow: 0 8px 30px rgba(0,0,0,.35);
+    max-width: 520px; margin-left: auto; margin-right: auto;
   }
-  .player-head {
-    display: flex; align-items: center; gap: 8px; padding: 10px 16px;
-    font-size: 13px; color: var(--text2); border-bottom: 1px solid var(--border);
+  .player-main { display: flex; align-items: center; gap: 16px; }
+  .play-btn {
+    flex: none; width: 58px; height: 58px; border-radius: 50%;
+    border: 1px solid var(--border-bright, rgba(90,141,255,.4));
+    background: linear-gradient(160deg, rgba(90,141,255,.25), rgba(167,139,250,.18));
+    color: #fff; font-size: 22px; cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+    box-shadow: 0 0 18px rgba(90,141,255,.3);
+    transition: all .2s;
   }
-  .player-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ender); box-shadow: 0 0 8px var(--ender); }
-  .player-card iframe {
-    display: block; width: 100%; height: 420px; border: 0; background: transparent;
+  .play-btn:hover { box-shadow: 0 0 28px rgba(90,141,255,.5); transform: scale(1.05); }
+  .play-btn:active { transform: scale(.95); }
+  .player-info { flex: 1; min-width: 0; }
+  .player-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .progress-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+  .time { font-size: 11px; color: var(--text3); font-family: monospace; flex: none; }
+  .progress {
+    flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,.12);
+    cursor: pointer; position: relative; -webkit-appearance: none; appearance: none;
+  }
+  .progress::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 13px; height: 13px; border-radius: 50%;
+    background: var(--ender); box-shadow: 0 0 8px var(--ender); cursor: pointer;
+  }
+  .progress::-moz-range-thumb {
+    width: 13px; height: 13px; border-radius: 50%;
+    background: var(--ender); box-shadow: 0 0 8px var(--ender); cursor: pointer; border: none;
   }
   .hint { text-align: center; font-size: 12px; color: var(--text3); margin-top: 8px; }
   .hint a { color: var(--ender); text-decoration: none; border-bottom: 1px dashed var(--ender); }
+  /* ===== 歌词 ===== */
   .lyrics { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px 18px; }
   .lyrics-title {
     text-align: center; font-size: 13px; letter-spacing: 3px; color: var(--text3);
@@ -80,7 +104,7 @@
   footer a { color: var(--ender); text-decoration: none; }
   @media (min-width: 820px) {
     .layout { display: grid; grid-template-columns: 400px 1fr; gap: 22px; align-items: start; }
-    .player-card { margin-bottom: 0; position: sticky; top: 20px; }
+    .player-card { margin-bottom: 0; position: sticky; top: 20px; margin-left: 0; margin-right: 0; }
     header { text-align: left; padding-left: 4px; }
     .cover-box { margin: 0 0 16px; }
   }
@@ -98,10 +122,20 @@
         <div class="meta"><span>Pop</span><span>AI 音乐</span><span>203 秒</span></div>
       </header>
       <div class="player-card">
-        <div class="player-head"><span class="player-dot"></span>正在播放 · 海绵音乐</div>
-        <iframe src="https://www.haimian.com/share/W0VRye9rpr" loading="lazy" allow="autoplay" title="轻拿轻放 - 海绵音乐播放器"></iframe>
+        <div class="player-main">
+          <button class="play-btn" id="playBtn" aria-label="播放">▶</button>
+          <div class="player-info">
+            <div class="player-title">轻拿轻放</div>
+            <div class="player-sub" id="playState">点击播放键开始收听</div>
+          </div>
+        </div>
+        <div class="progress-row">
+          <span class="time" id="curTime">0:00</span>
+          <input type="range" class="progress" id="progress" min="0" max="203" step="0.1" value="0">
+          <span class="time" id="durTime">3:23</span>
+        </div>
       </div>
-      <div class="hint">加载后点击封面区域即可播放 · 若未自动出声，<a href="https://www.haimian.com/share/W0VRye9rpr" target="_blank" rel="noopener">在新窗口打开</a></div>
+      <div class="hint">播放中返回简历，音乐会以悬浮窗继续 · <a href="https://www.haimian.com/share/W0VRye9rpr" target="_blank" rel="noopener">在海绵音乐打开</a></div>
     </div>
     <div class="lyrics">
       <div class="lyrics-title">— 歌 词 —</div>
@@ -118,5 +152,88 @@
   </div>
   <footer>《轻拿轻放》· 亦廾 · 用 <a href="https://www.haimian.com" target="_blank" rel="noopener">海绵音乐</a> 创作</footer>
 </div>
+
+<script>
+(function () {
+  var AUDIO_URL = 'song.m4a';
+  var DURATION = 203;
+  var LS_KEY = 'lydPlayer';
+
+  var audio = new Audio(AUDIO_URL);
+  audio.preload = 'metadata';
+  var playBtn = document.getElementById('playBtn');
+  var progress = document.getElementById('progress');
+  var curTime = document.getElementById('curTime');
+  var playState = document.getElementById('playState');
+
+  function fmt(s) {
+    s = Math.max(0, Math.floor(s));
+    return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+  }
+  function readState() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY)) || null; } catch (e) { return null; }
+  }
+  function writeState() {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        playing: !audio.paused, t: audio.currentTime, ts: Date.now(), v: 1
+      }));
+    } catch (e) {}
+  }
+  function setPlayBtn() {
+    playBtn.textContent = audio.paused ? '▶' : '❚❚';
+    playState.textContent = audio.paused ? '点击播放键开始收听' : '正在播放 · 返回简历将悬浮续播';
+  }
+  playBtn.addEventListener('click', function () {
+    if (audio.paused) {
+      audio.play().catch(function () {});
+    } else {
+      audio.pause();
+    }
+    setPlayBtn();
+    writeState();
+  });
+  audio.addEventListener('play', setPlayBtn);
+  audio.addEventListener('pause', setPlayBtn);
+  audio.addEventListener('timeupdate', function () {
+    curTime.textContent = fmt(audio.currentTime);
+    if (!progress.dragging) progress.value = audio.currentTime;
+  });
+  audio.addEventListener('loadedmetadata', function () {
+    progress.max = audio.duration || DURATION;
+    document.getElementById('durTime').textContent = fmt(audio.duration || DURATION);
+  });
+  audio.addEventListener('ended', function () {
+    setPlayBtn(); writeState();
+  });
+  // 进度条拖动
+  progress.addEventListener('input', function () {
+    curTime.textContent = fmt(+progress.value);
+  });
+  progress.addEventListener('change', function () {
+    audio.currentTime = +progress.value;
+    writeState();
+  });
+  // 播放中定时写状态（续播点）
+  setInterval(function () {
+    if (!audio.paused) writeState();
+  }, 3000);
+  // 离开页面时写状态
+  window.addEventListener('pagehide', function () { writeState(); });
+
+  // 进入页面：若有"正在播放"状态（90 秒内）→ 自动续播（这不算"自动播放"，是用户主动离开前的延续）
+  var st = readState();
+  if (st && st.playing && st.v === 1 && (Date.now() - st.ts) < 90000) {
+    audio.currentTime = Math.min(st.t + (Date.now() - st.ts) / 1000, DURATION);
+    audio.play().then(function () {
+      setPlayBtn();
+    }).catch(function () {
+      // 移动端 autoplay 策略：需要用户手势，此时保持暂停显示播放键
+      setPlayBtn();
+      playState.textContent = '点击播放键继续收听';
+    });
+  }
+})();
+</script>
 </body>
 </html>
