@@ -53,10 +53,15 @@ export class InputManager {
     const rect = () => this.canvas.getBoundingClientRect();
 
     const getPos = (e) => {
+      // canvas 内部按 dpr 放大（ctx 已 setTransform），游戏逻辑坐标 = CSS 像素
+      // 因此用逻辑视口宽高与 CSS 宽高的比值换算，避免 dpr 重复放大
       const r = rect();
-      const px = (e.clientX - r.left) * (this.canvas.width / r.width);
-      const py = (e.clientY - r.top)  * (this.canvas.height / r.height);
-      return { x: px, y: py };
+      const scaleX = (r.width > 0) ? (window.innerWidth / r.width) : 1;
+      const scaleY = (r.height > 0) ? (window.innerHeight / r.height) : 1;
+      return {
+        x: (e.clientX - r.left) * scaleX,
+        y: (e.clientY - r.top) * scaleY,
+      };
     };
 
     this.canvas.addEventListener('pointerdown', (e) => {

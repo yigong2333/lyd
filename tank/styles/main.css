@@ -421,15 +421,18 @@ html, body {
   pointer-events: none;
 }
 #joystick {
-  position: absolute;
-  bottom: 30px; left: 30px;
-  width: 110px; height: 110px;
+  position: fixed;
+  width: 90px; height: 90px;
   border-radius: 50%;
   border: 2px solid var(--neon-cyan);
-  background: rgba(0, 240, 255, 0.08);
+  background: rgba(0, 240, 255, 0.10);
   box-shadow: 0 0 14px var(--panel-shadow);
-  pointer-events: auto;
+  pointer-events: none;
   touch-action: none;
+  display: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  z-index: 50;
 }
 #joystick-knob {
   position: absolute;

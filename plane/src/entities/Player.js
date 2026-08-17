@@ -71,13 +71,13 @@ export class Player extends Entity {
     // 指针/触屏 移动（跟随）
     if (input.pointer.down) {
       if (input.dragEnabled || input.isDown('')) {
-        // 触屏：玩家相对于指针固定偏移（手指下不遮挡）
+        // 全屏触摸：手指点哪飞机飞哪（快速跟手，手指下方偏移防遮挡）
         const targetX = input.pointer.x;
-        const targetY = input.pointer.y + (input.dragEnabled ? 50 : 0);
-        // PC鼠标按住则吸附；移动端平滑跟随
-        const lerpFactor = input.dragEnabled ? 0.35 : 0.9;
-        this.x = this.x + (targetX - this.x) * lerpFactor * Math.min(1, 0.2 * dts);
-        this.y = this.y + (targetY - this.y) * lerpFactor * Math.min(1, 0.2 * dts);
+        const targetY = input.pointer.y + (input.dragEnabled ? 40 : 0);
+        const lerpFactor = input.dragEnabled ? 0.9 : 0.9;
+        const k = lerpFactor * Math.min(1, 0.35 * dts);
+        this.x = this.x + (targetX - this.x) * k;
+        this.y = this.y + (targetY - this.y) * k;
       }
     }
 

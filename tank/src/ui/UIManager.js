@@ -350,20 +350,38 @@ export class UIManager {
   // ============================================================
 
   _bindMobile() {
+    // 全屏跟随摇杆：手指在屏幕任意位置按下即生成摇杆，拖动控制方向
+    const container = this.game.canvas || document.getElementById('game-container');
     const stick = this.$('joystick');
+    const knob = this.$('joystick-knob');
     const fireBtn = this.$('btn-fire');
     const skillBtn = this.$('btn-skill');
-    if (!stick) return;
 
     let baseX = 0, baseY = 0, touchId = null;
+    const JOY_MAX = 40; // 摇杆最大半径
+
+    const showStick = (cx, cy) => {
+      if (!stick) return;
+      stick.style.left = (cx - 45) + 'px';
+      stick.style.top = (cy - 45) + 'px';
+      stick.style.opacity = '1';
+      stick.style.display = 'block';
+    };
+    const hideStick = () => {
+      if (!stick) return;
+      stick.style.opacity = '0';
+      setTimeout(() => { if (stick.style.opacity === '0') stick.style.display = 'none'; }, 200);
+      if (knob) knob.style.transform = '';
+    };
+
     const onStart = (e) => {
       e.preventDefault();
       const t = e.touches ? e.touches[0] : e;
-      const rect = stick.getBoundingClientRect();
-      baseX = rect.left + rect.width / 2;
-      baseY = rect.top + rect.height / 2;
+      baseX = t.clientX;
+      baseY = t.clientY;
       touchId = e.touches ? t.identifier : 'mouse';
       this.game.input.setJoystick(baseX, baseY);
+      showStick(baseX, baseY);
     };
     const onMove = (e) => {
       if (touchId === null) return;
@@ -376,29 +394,34 @@ export class UIManager {
       const dx = t.clientX - baseX;
       const dy = t.clientY - baseY;
       this.game.input.updateJoystick(dx, dy);
-      // 移动摇杆手柄
-      const knob = this.$('joystick-knob');
       if (knob) {
-        const max = 30;
         const len = Math.hypot(dx, dy);
-        const k = len > max ? max / len : 1;
+        const k = len > JOY_MAX ? JOY_MAX / len : 1;
         knob.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
       }
     };
     const onEnd = (e) => {
       e.preventDefault();
+      if (e.touches) {
+        // 只响应当前摇杆手指的抬起
+        let still = false;
+        for (const tc of e.touches) if (tc.identifier === touchId) still = true;
+        if (still) return;
+      }
       touchId = null;
       this.game.input.endJoystick();
-      const knob = this.$('joystick-knob');
-      if (knob) knob.style.transform = '';
+      hideStick();
     };
 
-    stick.addEventListener('touchstart', onStart, { passive: false });
-    stick.addEventListener('touchmove', onMove, { passive: false });
-    stick.addEventListener('touchend', onEnd, { passive: false });
-    stick.addEventListener('mousedown', onStart);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onEnd);
+    if (container) {
+      container.addEventListener('touchstart', onStart, { passive: false });
+      container.addEventListener('touchmove', onMove, { passive: false });
+      container.addEventListener('touchend', onEnd, { passive: false });
+      container.addEventListener('touchcancel', onEnd, { passive: false });
+      container.addEventListener('mousedown', onStart);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onEnd);
+    }
 
     if (fireBtn) {
       const f = (e) => { e.preventDefault(); this.game.input.setTouchFire(true); };
