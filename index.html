@@ -1281,6 +1281,92 @@ footer::before {
 }
 .mini-close:hover { color: #fff; }
 
+
+/* ===== 听歌覆盖层 ===== */
+.song-layer {
+  position: fixed; inset: 0; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 600; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(167,139,250,.16), rgba(15,13,31,0) 55%),
+    radial-gradient(ellipse at 80% 90%, rgba(90,141,255,.1), rgba(15,13,31,0) 50%),
+    linear-gradient(180deg, #0f0d1f, #171530 60%, #0f0d1f);
+  color: #fff; padding: 18px 16px 40px;
+  opacity: 0; pointer-events: none; transform: translateY(24px);
+  transition: opacity .28s ease, transform .28s ease;
+}
+.song-layer.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.song-close {
+  position: fixed; top: 14px; right: 16px; z-index: 601;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid rgba(167,139,250,.4); background: rgba(20,16,48,.85);
+  color: #d4d1e5; font-size: 18px; cursor: pointer; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.song-close:hover { color: #fff; border-color: #5a8dff; }
+.song-content { max-width: 880px; margin: 0 auto; }
+.song-head { text-align: center; padding: 12px 8px 18px; }
+.song-head .cover-box { position: relative; max-width: 480px; margin: 0 auto 14px; }
+.song-head .cover-box img {
+  display: block; width: 100%; height: auto; border-radius: 16px;
+  border: 1px solid rgba(167,139,250,.25);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 30px rgba(90,141,255,.16);
+}
+.song-head h2 { font-size: 24px; letter-spacing: 2px; }
+.song-head .sub { color: #d4d1e5; font-size: 13px; margin-top: 3px; }
+.song-player {
+  background: rgba(30,28,62,.72); border: 1px solid rgba(167,139,250,.22);
+  border-radius: 16px; padding: 14px 16px; max-width: 480px; margin: 0 auto 18px;
+}
+.song-player .row { display: flex; align-items: center; gap: 14px; }
+.song-play {
+  flex: none; width: 54px; height: 54px; border-radius: 50%;
+  border: 1px solid rgba(90,141,255,.4);
+  background: linear-gradient(160deg, rgba(90,141,255,.25), rgba(167,139,250,.18));
+  color: #fff; font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 16px rgba(90,141,255,.3); transition: all .2s;
+}
+.song-play:active { transform: scale(.94); }
+.song-player .info { flex: 1; min-width: 0; }
+.song-player .t1 { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.song-player .t2 { font-size: 11px; color: #938fb0; margin-top: 2px; }
+.song-progress-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.song-progress-row .t { font-size: 10px; color: #938fb0; font-family: monospace; flex: none; }
+.song-progress {
+  flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,.12);
+  cursor: pointer; -webkit-appearance: none; appearance: none;
+}
+.song-progress::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: #5a8dff; box-shadow: 0 0 8px #5a8dff; cursor: pointer;
+}
+.song-progress::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%; border: none;
+  background: #5a8dff; box-shadow: 0 0 8px #5a8dff; cursor: pointer;
+}
+.song-lyrics {
+  background: rgba(30,28,62,.72); border: 1px solid rgba(167,139,250,.22);
+  border-radius: 16px; padding: 20px 18px;
+}
+.song-lyrics .t { text-align: center; font-size: 12px; letter-spacing: 3px; color: #938fb0; margin-bottom: 16px; }
+.song-lyrics .lyric-section { margin-bottom: 16px; }
+.song-lyrics .lyric-tag {
+  display: inline-block; font-size: 11px; letter-spacing: 2px; color: #fcd34d;
+  border: 1px solid rgba(252,211,77,.35); padding: 1px 10px; border-radius: 12px; margin-bottom: 8px;
+}
+.song-lyrics .lyric-lines p { color: #d4d1e5; font-size: 15px; margin: 3px 0; }
+.song-lyrics .tag-chorus .lyric-lines p { color: #fff; font-weight: 600; font-size: 16px; text-shadow: 0 0 14px rgba(90,141,255,.35); }
+.song-lyrics .tag-chorus { padding: 8px 0; }
+.song-footer { text-align: center; margin-top: 14px; font-size: 11px; color: #938fb0; }
+.song-footer a { color: #5a8dff; text-decoration: none; }
+@media (min-width: 820px) {
+  .song-content { display: grid; grid-template-columns: 420px 1fr; gap: 20px; align-items: start; }
+  .song-head, .song-player, .song-footer { grid-column: 1; }
+  .song-lyrics { grid-column: 2; grid-row: 1 / span 3; }
+  .song-head { text-align: left; }
+}
+
 </style>
 </head>
 <body>
@@ -2100,23 +2186,34 @@ window.addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-// ========== 迷你音乐播放器（《轻拿轻放》跨页续播） ==========
+
+// ========== 音乐播放系统（听歌覆盖层 + 悬浮窗 + 状态同步） ==========
 (function () {
   var LS_KEY = 'lydPlayer';
   var SONG_URL = 'song/song.m4a';
   var DURATION = 203;
+  var LYRICS_HTML = '<div class="lyric-section tag-intro"><span class="lyric-tag">前奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>你说这周搬家 问我有没有空</p><p>反正我有车</p><p>你说得理直气壮</p><p>我说好啊</p><p>好得不太像帮忙</p><p>倒像是终于</p><p>等到了什么一样</p><p>[pre-chorus]</p><p>你封箱熟练</p><p>胶带都撕得狂妄</p><p>回头叮嘱我 这几箱轻点</p><p>易碎朝上</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你对纸箱 都比对我善良</p><p>轻拿 轻放</p><p>装得下的归你 装不下的我扛</p></div></div>\n<div class="lyric-section tag-verse"><span class="lyric-tag">主歌</span><div class="lyric-lines"><p>你用马克笔</p><p>给每个箱子起名字</p><p>厨房 冬装</p><p>字迹还是那么漂亮</p><p>只有一箱写杂物</p><p>你说这箱随便放</p><p>可里面每一样</p><p>订单都还在我手机上</p><p>[pre-chorus]</p><p>到你新家楼下</p><p>有人小跑来帮忙</p><p>我低下头去</p><p>假装还在研究导航</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你对纸箱 都比对我善良</p><p>轻拿 轻放</p><p>装得下的归你 装不下的我扛</p></div></div>\n<div class="lyric-section tag-interlude"><span class="lyric-tag">间奏</span><div class="lyric-lines"></div></div>\n<div class="lyric-section tag-bridge"><span class="lyric-tag">桥段</span><div class="lyric-lines"><p>最后你清点完 说差不多了</p><p>那箱杂物别搬了</p><p>新家放不下</p><p>我说好 正顺路 我拿去扔了</p><p>垃圾站三公里 我开了一晚上</p></div></div>\n<div class="lyric-section tag-chorus"><span class="lyric-tag">副歌</span><div class="lyric-lines"><p>轻拿 轻放</p><p>你不要的那箱</p><p>我捡得理直气壮</p><p>轻拿 轻放</p><p>这四个字 这一次</p><p>我写在箱上</p></div></div>\n<div class="lyric-section tag-outro"><span class="lyric-tag">尾奏</span><div class="lyric-lines"><p>后备箱的东西终于有了存放</p><p>而我从此只能流浪</p></div></div>';
+
   function readState() {
     try { return JSON.parse(localStorage.getItem(LS_KEY)) || null; } catch (e) { return null; }
   }
   function writeState() {
-    if (!audio) return;
     try {
       localStorage.setItem(LS_KEY, JSON.stringify({
         playing: !audio.paused, t: audio.currentTime, ts: Date.now(), v: 1
       }));
     } catch (e) {}
   }
-  // DOM
+  function fmt(s) {
+    s = Math.max(0, Math.floor(s));
+    return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+  }
+
+  // --- audio 单例（提前缓冲：打开听歌层即开始加载） ---
+  var audio = new Audio(SONG_URL);
+  audio.preload = 'auto';
+
+  // --- 悬浮窗 ---
   var wrap = document.createElement('div');
   wrap.className = 'mini-player';
   wrap.innerHTML = '<img src="song/cover.jpg" alt="轻拿轻放封面">'
@@ -2125,48 +2222,136 @@ window.addEventListener('scroll', () => {
     + '<button class="mini-btn" id="miniPlayBtn" aria-label="播放/暂停">▶</button>'
     + '<button class="mini-close" id="miniClose" aria-label="关闭">×</button>';
   document.body.appendChild(wrap);
-  var playBtn = wrap.querySelector('#miniPlayBtn');
-  var closeBtn = wrap.querySelector('#miniClose');
+  var miniPlayBtn = wrap.querySelector('#miniPlayBtn');
+  var miniClose = wrap.querySelector('#miniClose');
 
-  var audio = new Audio(SONG_URL);
-  audio.preload = 'metadata';
-
-  function show(paused) {
+  function showMini() {
     wrap.classList.add('show');
-    playBtn.textContent = paused ? '▶' : '❚❚';
+    miniPlayBtn.textContent = audio.paused ? '▶' : '❚❚';
   }
-  playBtn.addEventListener('click', function () {
-    if (audio.paused) {
-      audio.play().catch(function () {});
-    } else {
-      audio.pause();
-    }
-    playBtn.textContent = audio.paused ? '▶' : '❚❚';
+  miniPlayBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (audio.paused) { audio.play().catch(function () {}); }
+    else { audio.pause(); }
+    miniPlayBtn.textContent = audio.paused ? '▶' : '❚❚';
     writeState();
   });
-  closeBtn.addEventListener('click', function () {
+  miniClose.addEventListener('click', function (e) {
+    e.stopPropagation();
     audio.pause();
     wrap.classList.remove('show');
-    try { localStorage.removeItem(LS_KEY); } catch (e) {}
+    try { localStorage.removeItem(LS_KEY); } catch (e2) {}
   });
   wrap.addEventListener('click', function (e) {
-    // 点击悬浮窗主体（非按钮）→ 打开听歌页
     if (e.target === wrap || e.target.classList.contains('mini-info') || e.target.tagName === 'IMG') {
-      window.location.href = 'song/';
+      openLayer();
     }
   });
-  audio.addEventListener('pause', function () { playBtn.textContent = '▶'; });
-  audio.addEventListener('play', function () { playBtn.textContent = '❚❚'; });
+
+  // --- 听歌覆盖层（懒创建） ---
+  var layer = null;
+  function buildLayer() {
+    if (layer) return;
+    layer = document.createElement('div');
+    layer.className = 'song-layer';
+    layer.innerHTML =
+      '<button class="song-close" id="songClose" aria-label="关闭">×</button>'
+      + '<div class="song-content">'
+      + '<div class="song-head">'
+      + '<div class="cover-box"><img src="song/cover.jpg" alt="轻拿轻放封面"></div>'
+      + '<h2>轻拿轻放</h2><div class="sub">亦廾 · 海绵音乐 AI 创作</div>'
+      + '</div>'
+      + '<div class="song-player">'
+      + '<div class="row">'
+      + '<button class="song-play" id="songPlayBtn" aria-label="播放">▶</button>'
+      + '<div class="info"><div class="t1">轻拿轻放</div><div class="t2" id="songState">点击播放键开始收听</div></div>'
+      + '</div>'
+      + '<div class="song-progress-row">'
+      + '<span class="t" id="songCur">0:00</span>'
+      + '<input type="range" class="song-progress" id="songProgress" min="0" max="203" step="0.1" value="0">'
+      + '<span class="t" id="songDur">3:23</span>'
+      + '</div>'
+      + '</div>'
+      + '<div class="song-lyrics"><div class="t">— 歌 词 —</div>' + LYRICS_HTML + '</div>'
+      + '<div class="song-footer">《轻拿轻放》· 用 <a href="https://www.haimian.com" target="_blank" rel="noopener">海绵音乐</a> 创作 · <a href="song/" target="_blank" rel="noopener">独立页面</a></div>'
+      + '</div>';
+    document.body.appendChild(layer);
+
+    var playBtn = layer.querySelector('#songPlayBtn');
+    var progress = layer.querySelector('#songProgress');
+    var curEl = layer.querySelector('#songCur');
+    var stateEl = layer.querySelector('#songState');
+    var closeBtn = layer.querySelector('#songClose');
+
+    function refreshPlayBtn() {
+      playBtn.textContent = audio.paused ? '▶' : '❚❚';
+      stateEl.textContent = audio.paused ? '点击播放键开始收听' : '正在播放 · 关闭此页音乐会继续';
+    }
+    playBtn.addEventListener('click', function () {
+      if (audio.paused) { audio.play().catch(function () {}); }
+      else { audio.pause(); }
+      refreshPlayBtn(); writeState();
+    });
+    closeBtn.addEventListener('click', closeLayer);
+    layer.addEventListener('click', function (e) { if (e.target === layer) closeLayer(); });
+    audio.addEventListener('play', refreshPlayBtn);
+    audio.addEventListener('pause', refreshPlayBtn);
+    audio.addEventListener('ended', function () { refreshPlayBtn(); writeState(); });
+    audio.addEventListener('timeupdate', function () {
+      curEl.textContent = fmt(audio.currentTime);
+      progress.value = audio.currentTime;
+    });
+    audio.addEventListener('loadedmetadata', function () {
+      progress.max = audio.duration || DURATION;
+      layer.querySelector('#songDur').textContent = fmt(audio.duration || DURATION);
+    });
+    progress.addEventListener('input', function () { curEl.textContent = fmt(+progress.value); });
+    progress.addEventListener('change', function () {
+      audio.currentTime = +progress.value;
+      writeState();
+    });
+  }
+  function openLayer() {
+    buildLayer();
+    layer.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    // 打开即缓冲（audio.preload=auto 已生效），若此前在播放则按钮保持播放态
+    var playBtn = layer.querySelector('#songPlayBtn');
+    playBtn.textContent = audio.paused ? '▶' : '❚❚';
+    wrap.classList.remove('show');
+  }
+  function closeLayer() {
+    layer.classList.remove('show');
+    document.body.style.overflow = '';
+    if (!audio.paused) showMini();
+  }
+
+  // --- 简历项目卡"立即听歌"按钮 → 打开覆盖层（不跳页，播放不断） ---
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href="song/"]') : null;
+    if (a) {
+      e.preventDefault();
+      openLayer();
+    }
+  });
+
+  // --- 状态同步 ---
   setInterval(function () { if (!audio.paused) writeState(); }, 3000);
   window.addEventListener('pagehide', writeState);
 
-  // 恢复播放：状态"播放中"且 90 秒内 → 续播 + 显示悬浮窗
+  // --- 进入页面：续播恢复 ---
   var st = readState();
   if (st && st.playing && st.v === 1 && (Date.now() - st.ts) < 90000) {
     audio.currentTime = Math.min(st.t + (Date.now() - st.ts) / 1000, DURATION);
-    audio.play().then(function () { show(false); }).catch(function () { show(true); });
+    audio.play().then(function () {
+      showMini();
+    }).catch(function () {
+      // 移动端无手势限制：显示悬浮窗，点击即可继续
+      showMini();
+    });
   }
 })();
+
 </script>
 </body>
 </html>

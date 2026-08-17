@@ -70,12 +70,17 @@ export class Player extends Entity {
     }
     // 指针/触屏 移动（跟随）
     if (input.pointer.down) {
-      if (input.dragEnabled || input.isDown('')) {
-        // 全屏触摸：手指点哪飞机飞哪（快速跟手，手指下方偏移防遮挡）
+      if (input.dragEnabled) {
+        // 移动端滑动模式：手指滑多远飞机走多远（灵敏度 1.15，无遮挡问题）
+        const d = input.getPointerDelta();
+        const sens = 1.15;
+        this.x = this.x + d.dx * sens;
+        this.y = this.y + d.dy * sens;
+      } else if (input.isDown('')) {
+        // PC 鼠标按住吸附模式
         const targetX = input.pointer.x;
-        const targetY = input.pointer.y + (input.dragEnabled ? 40 : 0);
-        const lerpFactor = input.dragEnabled ? 0.9 : 0.9;
-        const k = lerpFactor * Math.min(1, 0.35 * dts);
+        const targetY = input.pointer.y + 40;
+        const k = 0.9 * Math.min(1, 0.35 * dts);
         this.x = this.x + (targetX - this.x) * k;
         this.y = this.y + (targetY - this.y) * k;
       }

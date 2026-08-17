@@ -22,6 +22,8 @@ export class InputManager {
       holdTime: 0,          // 按住时长（ms）
       moved: false,         // 本帧是否有移动
       movedInHold: false,   // 本次按住期间是否发生过移动
+      dx: 0, dy: 0,         // 本帧位移增量（滑动模式用）
+      _lastX: 0, _lastY: 0, // 上一帧指针位置
     };
 
     // 相对玩家：是否在"拖动"（触屏移动模式）
@@ -68,6 +70,8 @@ export class InputManager {
       e.preventDefault();
       const p = getPos(e);
       this.pointer.x = p.x; this.pointer.y = p.y;
+      this.pointer._lastX = p.x; this.pointer._lastY = p.y;
+      this.pointer.dx = 0; this.pointer.dy = 0;
       this.pointer.down = true;
       this.pointer.pressed = true;
       this.pointer.holdTime = 0;
@@ -75,10 +79,15 @@ export class InputManager {
     });
     this.canvas.addEventListener('pointermove', (e) => {
       const p = getPos(e);
-      if (this.pointer.down && (this.pointer.x !== p.x || this.pointer.y !== p.y)) {
-        this.pointer.moved = true;
-        this.pointer.movedInHold = true;
+      if (this.pointer.down) {
+        this.pointer.dx += p.x - this.pointer._lastX;
+        this.pointer.dy += p.y - this.pointer._lastY;
+        if (this.pointer.x !== p.x || this.pointer.y !== p.y) {
+          this.pointer.moved = true;
+          this.pointer.movedInHold = true;
+        }
       }
+      this.pointer._lastX = p.x; this.pointer._lastY = p.y;
       this.pointer.x = p.x; this.pointer.y = p.y;
     });
     const upHandler = (e) => {
@@ -116,6 +125,7 @@ export class InputManager {
     this.pointer.pressed = false;
     this.pointer.released = false;
     this.pointer.moved = false;
+    // 位移增量保留给本帧查询，帧末清零
     if (this.pointer.down) this.pointer.holdTime += dt;
     else this.pointer.holdTime = 0;
 
@@ -126,6 +136,14 @@ export class InputManager {
   endFrame() {
     this.vButtons.bombPressed = false;
     this.vButtons.skillPressed = false;
+    // 滑动位移增量清零
+    this.pointer.dx = 0;
+    this.pointer.dy = 0;
+  }
+
+  /** 本帧指针位移增量（滑动移动模式） */
+  getPointerDelta() {
+    return { dx: this.pointer.dx, dy: this.pointer.dy };
   }
 
   // ---------- 查询 ----------
