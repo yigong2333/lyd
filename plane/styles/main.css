@@ -49,6 +49,7 @@ html, body {
   height: 100%;
   display: block;
   image-rendering: pixelated;
+  touch-action: none;
 }
 
 .hidden { display: none !important; }
