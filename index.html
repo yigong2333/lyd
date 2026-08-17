@@ -182,15 +182,23 @@ body::after {
 [data-theme="light"] .deco-pearl2,
 [data-theme="light"] .deco-end-crystal,
 [data-theme="light"] .deco-dragon-egg { opacity: 0.1; }
-/* 移动端：保留少量浮动装饰，隐藏静态大块 */
+/* 移动端：装饰移到更靠中间的位置，保留 6 个浮动小装饰 */
 @media (max-width: 600px) {
-  .deco-endstone-1, .deco-endstone-2, .deco-endstone-3,
-  .deco-endstone-brick, .deco-purpur, .deco-portal-frame,
+  .deco-endstone-1, .deco-endstone-3,
+  .deco-endstone-brick, .deco-portal-frame,
   .deco-enderman, .deco-enderman-2, .deco-shulker { display: none; }
-  .deco-pearl, .deco-pearl2 { width: 18px; height: 18px; }
-  .deco-end-crystal { width: 22px; height: 22px; }
-  .deco-dragon-egg { width: 24px; height: 30px; }
+  .deco-pearl { width: 18px; height: 18px; left: 24%; top: 14%; }
+  .deco-pearl2 { width: 18px; height: 18px; left: 58%; top: 72%; }
+  .deco-end-crystal { width: 22px; height: 22px; left: 42%; top: 30%; }
+  .deco-dragon-egg { width: 24px; height: 30px; right: 26%; bottom: 20%; }
+  .deco-purpur { display: block; width: 26px; height: 26px; left: 30%; top: 84%; }
+  .deco-endstone-2 { display: block; width: 28px; height: 28px; left: 66%; top: 10%; }
   .deco-end-rod { display: none; }
+}
+/* 手机端装饰轻微右移避免与文字重叠 */
+@media (max-width: 600px) {
+  .deco-pearl { left: 26%; }
+  .deco-endstone-2 { left: 68%; }
 }
 /* 极小屏：全部隐藏 */
 @media (max-width: 380px) { .end-deco { display: none !important; } }
