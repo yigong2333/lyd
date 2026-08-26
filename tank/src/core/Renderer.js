@@ -139,7 +139,7 @@ export class Renderer {
     }
   }
 
-  // ---------- 地板涂鸦："浩源""浪尖儿" ----------
+  // ---------- 地板涂鸦："LYD" ----------
   _drawGraffiti() {
     const ctx = this.ctx;
     const pulse = 0.5 + 0.5 * Math.sin(this._time / 600);
@@ -148,43 +148,54 @@ export class Renderer {
     for (const g of GRAFFITI_TEXTS) {
       const x = g.col * TILE_SIZE;
       const y = g.row * TILE_SIZE;
-      const textW = g.text.length * fontSize * 0.95;
-      const textH = fontSize;
 
       ctx.save();
-      // 半透明背景框
-      ctx.globalAlpha = 0.08;
+      // 粗体英文字体优先，中文后备
+      ctx.font = `900 ${fontSize}px "Arial Black", "Impact", "Microsoft YaHei", "PingFang SC", sans-serif`;
+      const textW = ctx.measureText(g.text).width;
+      const textH = fontSize;
+
+      // 半透明圆角底板，衬托文字更清晰
+      const pad = 6;
+      ctx.globalAlpha = 0.14;
       ctx.fillStyle = g.color;
-      ctx.fillRect(x - 4, y - 4, textW + 8, textH + 8);
+      ctx.beginPath();
+      if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(x - pad, y - pad, textW + pad * 2, textH + pad * 2, 8);
+      } else {
+        ctx.rect(x - pad, y - pad, textW + pad * 2, textH + pad * 2);
+      }
+      ctx.fill();
 
       // 文字本体 — 多层渲染制造霓虹发光效果
-      ctx.font = `bold ${fontSize}px "Microsoft YaHei", "PingFang SC", sans-serif`;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
 
       // 外层发光（大模糊）
-      ctx.globalAlpha = 0.25 + 0.15 * pulse;
+      ctx.globalAlpha = 0.3 + 0.15 * pulse;
       ctx.shadowColor = g.color;
-      ctx.shadowBlur = 20;
+      ctx.shadowBlur = 24;
       ctx.fillStyle = g.color;
       ctx.fillText(g.text, x, y);
 
       // 中层发光
-      ctx.globalAlpha = 0.35 + 0.15 * pulse;
-      ctx.shadowBlur = 10;
+      ctx.globalAlpha = 0.45 + 0.15 * pulse;
+      ctx.shadowBlur = 12;
       ctx.fillText(g.text, x, y);
 
-      // 核心文字（亮白）
-      ctx.globalAlpha = 0.5 + 0.2 * pulse;
+      // 核心文字（亮白，两遍叠加保证清晰）
+      ctx.globalAlpha = 0.85 + 0.15 * pulse;
       ctx.shadowBlur = 4;
       ctx.fillStyle = '#ffffff';
       ctx.fillText(g.text, x, y);
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+      ctx.fillText(g.text, x, y);
 
       // 描边
-      ctx.globalAlpha = 0.6;
-      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 0.65;
       ctx.strokeStyle = g.color;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.5;
       ctx.strokeText(g.text, x, y);
 
       ctx.restore();
