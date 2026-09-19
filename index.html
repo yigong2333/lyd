@@ -1655,8 +1655,8 @@ footer::before {
       <li><a href="#experience">经历</a></li>
       <li><a href="#projects">项目</a></li>
       <li><a href="#skills">技能</a></li>
-      <li><a href="#education">教育</a></li>
       <li><a href="#certs">证书</a></li>
+      <li><a href="#education">教育</a></li>
       <li><a href="#messages">留言</a></li>
     </ul>
     <div class="nav-actions">
@@ -2406,25 +2406,25 @@ app.appendChild(renderDragonShowcase());
 if (resume.experience?.length) app.appendChild(renderExperience());
 if (resume.projects?.length) app.appendChild(renderProjects());
 if (resume.skills?.length) app.appendChild(renderSkills());
-if (resume.education?.length) app.appendChild(renderEducation());
 app.appendChild(renderCertificates());
+if (resume.education?.length) app.appendChild(renderEducation());
 if (resume.hobbies?.length) app.appendChild(renderHobbies());
 app.appendChild(renderMessages());
 app.appendChild(renderFooter());
 
-// 证书提前预加载：滚到教育背景（前一板块）附近时，后台先下好证书图，
+// 证书提前预加载：快滚到技能板块（证书的前一板块）时，后台先下好证书图，
 // 这样滚到证书墙时直接显示、零等待
 (function preloadCertsEarly() {
   const preload = () => resume.certificates.forEach(c => {
     const img = new Image();
     img.src = (c.img || '').replace(/\.jpg$/i, '.webp');
   });
-  const edu = document.getElementById('education');
-  if ('IntersectionObserver' in window && edu) {
+  const trigger = document.getElementById('skills') || document.getElementById('projects');
+  if ('IntersectionObserver' in window && trigger) {
     const io = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) { preload(); io.disconnect(); }
-    }, { rootMargin: '500px' });
-    io.observe(edu);
+    }, { rootMargin: '700px' });
+    io.observe(trigger);
   } else {
     preload();
   }
