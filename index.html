@@ -933,7 +933,10 @@ section {
   min-height: 0;
   object-fit: cover;
   background: #0d0b1a;
+  opacity: 0;
+  transition: opacity 0.45s ease;
 }
+.cert-fan-img.loaded { opacity: 1; }
 .cert-fan-meta {
   padding: 6px 8px 7px;
   background: linear-gradient(180deg, rgba(20,18,42,0.92), #100e20);
@@ -1652,8 +1655,8 @@ footer::before {
       <li><a href="#experience">经历</a></li>
       <li><a href="#projects">项目</a></li>
       <li><a href="#skills">技能</a></li>
-      <li><a href="#certs">证书</a></li>
       <li><a href="#education">教育</a></li>
+      <li><a href="#certs">证书</a></li>
       <li><a href="#messages">留言</a></li>
     </ul>
     <div class="nav-actions">
@@ -2234,7 +2237,7 @@ function renderCertificates() {
       const thumb = c.img.replace(/\.jpg$/i, '.webp');
       inner += `
         <div class="cert-fan-card" data-cert-idx="${i}" role="button" tabindex="0" aria-label="点击查看证书大图: ${c.name}" style="--rot:${rot}deg;--zi:${zi};">
-          <img class="cert-fan-img" src="${thumb}" alt="${c.name}证书" loading="lazy">
+          <img class="cert-fan-img" src="${thumb}" alt="${c.name}证书" loading="lazy" decoding="async" onload="this.classList.add('loaded')">
           <div class="cert-fan-meta">
             <div class="cert-fan-name">${c.name}</div>
             <div class="cert-fan-issuer">${c.issuer} · ${c.date}</div>
@@ -2264,6 +2267,8 @@ function renderCertificates() {
     `;
   }
   sec.innerHTML = `<h2 class="section-title"><span class="label" data-en="Certificates">技能证书</span></h2>${inner}`;
+  // 已缓存的图片立即显示（兜底 onload 未触发的情况）
+  sec.querySelectorAll('.cert-fan-img').forEach(img => { if (img.complete && img.naturalWidth) img.classList.add('loaded'); });
   // 绑定 Lightbox 事件
   if (resume.certificates.length > 0) {
     setupCertLightbox(sec, resume.certificates);
@@ -2401,8 +2406,8 @@ app.appendChild(renderDragonShowcase());
 if (resume.experience?.length) app.appendChild(renderExperience());
 if (resume.projects?.length) app.appendChild(renderProjects());
 if (resume.skills?.length) app.appendChild(renderSkills());
-app.appendChild(renderCertificates());
 if (resume.education?.length) app.appendChild(renderEducation());
+app.appendChild(renderCertificates());
 if (resume.hobbies?.length) app.appendChild(renderHobbies());
 app.appendChild(renderMessages());
 app.appendChild(renderFooter());
