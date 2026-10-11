@@ -667,6 +667,13 @@ section {
   background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.95));
 }
 .dragon-body { padding: 16px 18px 18px; }
+/* ===== 仿真成果卡片 ===== */
+.sim-card { max-width: 880px; margin: 0 auto; padding: 18px; }
+.sim-video-wrap { position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 8px 28px -12px rgba(0,0,0,.5); }
+.sim-body { padding: 2px 4px 4px; }
+.sim-desc { font-size: .85rem; color: var(--text-2); line-height: 1.75; margin-bottom: 10px; }
+.sim-desc strong { color: var(--text); font-weight: 700; }
+.sim-desc b { color: var(--purple); font-weight: 600; }
 .dragon-name {
   font-family: var(--font-display);
   font-size: 1.1rem;
@@ -1652,6 +1659,7 @@ footer::before {
       <li><a href="#hero">简介</a></li>
       <li><a href="#highlights">亮点</a></li>
       <li><a href="#showcase">游戏</a></li>
+      <li><a href="#sim">RST竞赛</a></li>
       <li><a href="#experience">经历</a></li>
       <li><a href="#projects">项目</a></li>
       <li><a href="#skills">技能</a></li>
@@ -2388,11 +2396,49 @@ function renderFooter() {
   return f;
 }
 
+// ========== 仿真成果视频 ==========
+function renderSimVideo() {
+  const sec = el('section', 'reveal');
+  sec.id = 'sim';
+  sec.innerHTML = `
+    <h2 class="section-title"><span class="label" data-en="RST Competition Work">RST 竞赛作品</span></h2>
+    <div class="floating-card sim-card">
+      <div class="sim-video-wrap">
+        <video src="sim_fish.mp4" controls preload="metadata"
+          playsinline webkit-playsinline
+          poster="sim_fish_poster.jpg"
+          style="width:100%;display:block;border-radius:12px;background:#04121e;"></video>
+      </div>
+      <div class="sim-body">
+        <div class="dragon-name">水中机器鱼自主避障仿真 <span class="badge">RST</span></div>
+        <div class="sim-desc">
+          <strong>先进机器人及仿真技术大赛（RST 大赛）· 智慧海洋赛道 · 水中机器鱼仿真组 —— 省赛参赛作品。</strong>
+          RST 大赛由中国仿真学会主办，始创于 2007 年，是我国水中机器人领域规模最大、历史最长的赛事之一。
+          本作品面向水下机器鱼自主导航任务，独立完成控制程序开发（Python）：基于 <b>Dubins 曲线</b>生成满足最小转弯半径约束的可行路径，
+          采用 <b>PID 闭环控制</b>实时解算尾鳍摆角与左右胸鳍推力，并结合鳍角推力方向实现深度自稳。
+          程序通过仿真平台实时订阅鱼的位姿与姿态角，逐帧输出控制量并落盘日志（每帧一条 CSV），
+          实现对立柱障碍物的稳定穿行与巡航。下方为仿真平台实际运行录屏。
+        </div>
+        <div class="dragon-stats">
+          <span class="dragon-stat">RST 大赛 · 省赛</span>
+          <span class="dragon-stat">Dubins 路径规划</span>
+          <span class="dragon-stat">PID 闭环控制</span>
+          <span class="dragon-stat">深度自稳</span>
+          <span class="dragon-stat">实时避障</span>
+          <span class="dragon-stat">Python</span>
+        </div>
+      </div>
+    </div>
+  `;
+  return sec;
+}
+
 // ========== 挂载 ==========
 const app = document.getElementById('app');
 app.appendChild(renderHero());
 if (resume.highlights?.length) app.appendChild(renderHighlights());
 app.appendChild(renderDragonShowcase());
+app.appendChild(renderSimVideo());
 if (resume.experience?.length) app.appendChild(renderExperience());
 if (resume.projects?.length) app.appendChild(renderProjects());
 if (resume.skills?.length) app.appendChild(renderSkills());
